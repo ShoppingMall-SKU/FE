@@ -5,10 +5,17 @@ import {Navigationbar} from "./components/navigationbar/navigationbar";
 import Home from "./pages/home";
 import SignIn from "./pages/signIn";
 import SignUp from "./pages/signUp";
+import Product from "./pages/product";
+import Basket from "./pages/basket";
 
 
 function App() {
-    const[cart, setCart] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [cart, setCart] = useState([]);
+
+    const convertPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
   return (
     <BrowserRouter>
         <Navigationbar cart={cart} />
@@ -16,7 +23,11 @@ function App() {
             <Route
                 path="/"
                 element={
-                <Home/>
+                <Home
+                    convertPrice={convertPrice}
+                    products={products}
+                    setProducts={setProducts}
+                />
                 }
             />
             <Route
@@ -29,6 +40,22 @@ function App() {
                 path="/signUp"
                 element={
                     <SignUp/>
+                }
+            />
+            <Route
+                path="/product/:id"
+                element={
+                    <Product
+                        convertPrice={convertPrice}
+                        cart={cart}
+                        setCart={setCart}
+                    />
+                }
+            />
+            <Route
+                path="/cart"
+                element={
+                    <Basket cart={cart} setCart={setCart} convertPrice={convertPrice} />
                 }
             />
         </Routes>

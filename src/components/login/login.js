@@ -6,6 +6,7 @@ export const Login = () => {
                     <div className="mb-8 flex justify-center">
                         <img className="w-24" src="/images/logo4.png" alt="logo" />
                     </div>
+
                     <div className="flex text-sm rounded-md flex-col">
                         <input className="mb-5 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="아이디" />
                         <input className="border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500" type="password" placeholder="비밀번호" />
