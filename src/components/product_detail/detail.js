@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProducts } from "../../service/fetcher";
 import axios from "axios";
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6496af0107a9a69d1c7a314626c012d4384c5d7c
 
 export const Detail = ({ convertPrice, cart, setCart }) => {
     const { id } = useParams();
@@ -48,13 +52,22 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
     };
 
     useEffect(() => {
+<<<<<<< HEAD
         const axiosProductDetail = async () => {
             const response = await axios.get(`http://localhost:8080//api/product/detail/${id}`);
+=======
+
+        const axiosProductDetail = async () => {
+            const response = await axios.get(`http://localhost:8080/api/product/detail/${id}`);
+>>>>>>> 6496af0107a9a69d1c7a314626c012d4384c5d7c
             const data = response.data;
 
             setProduct(data);
         };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6496af0107a9a69d1c7a314626c012d4384c5d7c
         axiosProductDetail();
     }, [id, product.price]);
 

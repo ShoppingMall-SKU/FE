@@ -6,7 +6,11 @@ import axios from "axios";
 
 export const Main = ({ convertPrice, products, setProducts })=>{
     useEffect(() => {
+<<<<<<< HEAD
         const axiosProduct = async () =>{
+=======
+        const axiosProduct = async () => {
+>>>>>>> 6496af0107a9a69d1c7a314626c012d4384c5d7c
             const response = await axios.get("http://localhost:8080/api/product/list");
             const data = response.data;
 
@@ -15,6 +19,7 @@ export const Main = ({ convertPrice, products, setProducts })=>{
 
         axiosProduct();
     }, [setProducts]);
+
 
   return(
       <div>

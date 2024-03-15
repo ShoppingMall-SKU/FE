@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 export const Login = () => {
+<<<<<<< HEAD
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [cookies, setCookies] = useCookies();
@@ -43,6 +44,38 @@ export const Login = () => {
                 alert("로그인에 실패했습니다.");
             });
 
+=======
+    const [email, setEmail] = useState(String);
+    const [password, setPassword] = useState(String);
+    const [cookies, setCookies] = useCookies();
+    //Axios.defaults.headers.common['Authorization'] = `Bearer ${res}`
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+    };
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const navigate = useNavigate();
+
+    const data = {
+        email,
+        password,
+    };
+
+    const handlerLogin = () => {
+        axios.post('/api/user/login', data).then(response => {
+            const { accessToken } = response.headers['authorization'];
+            setCookies('token', accessToken);
+
+            console.log(accessToken);
+            // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+            //axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+        });
+        navigate('/');
+>>>>>>> 6496af0107a9a69d1c7a314626c012d4384c5d7c
     }
 
 
@@ -56,8 +89,13 @@ export const Login = () => {
                     </div>
 
                     <div className="flex text-sm rounded-md flex-col">
+<<<<<<< HEAD
                         <input className="mb-5 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="이메일" value={email} onChange={(e)=> setEmail(e.target.value)}/>
                         <input className="border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500" type="password" placeholder="비밀번호" value={password} onChange={(e)=>setPassword(e.target.value)} />
+=======
+                        <input className="mb-5 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="이메일" value={email} onChange={handleEmailChange} />
+                        <input className="border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500" type="password" placeholder="비밀번호" value={password} onChange={handlePasswordChange} />
+>>>>>>> 6496af0107a9a69d1c7a314626c012d4384c5d7c
                     </div>
                     <button className="mt-5 w-full border p-2 bg-gradient-to-r from-green-800 bg-gray-500 text-white rounded-[4px] hover:bg-slate-400 scale-105 duration-300" type="submit"  onClick = {handlerLogin} >로그인</button>
                     <div className="mt-5 flex justify-end text-sm text-gray-600">
