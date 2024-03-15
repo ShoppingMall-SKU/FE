@@ -1,4 +1,52 @@
+import axios from "axios";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import { useCookies } from "react-cookie";
+
 export const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [cookies, setCookies] = useCookies();
+
+    const navigate = useNavigate();
+    const handlerLogin = () => {
+
+        if(email.length === 0 || password.length ===0){
+            alert('이메일과 비밀번호를 입력하세요.');
+            return;
+        }
+
+        const data = {
+            email,
+            password,
+        };
+
+        axios.post('http://localhost:8080/api/user/login', data)
+            .then(response => {
+                const accessToken = response.headers['authorization'];
+
+                if (!accessToken) {
+                    alert("로그인에 실패했습니다.");
+                    return;
+                }
+
+                if (!accessToken.result) {
+                    alert("로그인에 실패했습니다.");
+                    return;
+                }
+
+                setCookies('token', accessToken);
+                navigate('/');
+            })
+            .catch(error => {
+                console.error("로그인 요청 실패:", error);
+                alert("로그인에 실패했습니다.");
+            });
+
+    }
+
+
+
     return (
         <div>
             <div className="flex items-center justify-center h-screen">
@@ -8,10 +56,10 @@ export const Login = () => {
                     </div>
 
                     <div className="flex text-sm rounded-md flex-col">
-                        <input className="mb-5 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="아이디" />
-                        <input className="border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500" type="password" placeholder="비밀번호" />
+                        <input className="mb-5 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="이메일" value={email} onChange={(e)=> setEmail(e.target.value)}/>
+                        <input className="border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500" type="password" placeholder="비밀번호" value={password} onChange={(e)=>setPassword(e.target.value)} />
                     </div>
-                    <button className="mt-5 w-full border p-2 bg-gradient-to-r from-green-800 bg-gray-500 text-white rounded-[4px] hover:bg-slate-400 scale-105 duration-300" type="submit">로그인</button>
+                    <button className="mt-5 w-full border p-2 bg-gradient-to-r from-green-800 bg-gray-500 text-white rounded-[4px] hover:bg-slate-400 scale-105 duration-300" type="submit"  onClick = {handlerLogin} >로그인</button>
                     <div className="mt-5 flex justify-end text-sm text-gray-600">
                         <a href="/signUp">회원가입</a>
                     </div>

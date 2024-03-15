@@ -2,12 +2,18 @@ import {EventBanner} from "../eventBanner/eventBanner";
 import {useEffect} from "react";
 import {getProducts} from "../../service/fetcher";
 import {Product} from "../product/product";
+import axios from "axios";
 
 export const Main = ({ convertPrice, products, setProducts })=>{
     useEffect(() => {
-        getProducts().then((data) => {
-            setProducts(data.data.products);
-        });
+        const axiosProduct = async () =>{
+            const response = await axios.get("http://localhost:8080/api/product/list");
+            const data = response.data;
+
+            setProducts(data);
+        }
+
+        axiosProduct();
     }, [setProducts]);
 
   return(
