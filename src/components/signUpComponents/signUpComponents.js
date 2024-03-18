@@ -26,6 +26,23 @@ export const SignUpComponents = () => {
         setPhone(formattedPhoneNumber);
     };
 
+    const handleCheck = async () => {
+        if(!email) {
+            alert("이메일을 입력하십시오.");
+            return;
+        }
+        const response = await axios.get(`http://localhost:8080/api/user/check/email/${email}`)
+        if (response.data) {
+            setCheckEmail("사용 가능한 이메일 입니다.")
+        }
+        else {
+            alert("해당 이메일이 이미 존재합니다.")
+            return;
+        }
+    }
+
+    
+
     const handleSignup = async () => {
         try {
             if (!email || !password || !passwordCheck || !name || !phone || !address) {
@@ -69,7 +86,7 @@ export const SignUpComponents = () => {
                     <div className="flex text-sm rounded-md flex-col">
                         <div className="flex-row mb-1">
                             <input className="w-9/12 mr-4 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
-                            <button className="w-16">중복 확인</button>
+                            <button className="w-16" onClick={handleCheck}>중복 확인</button>
                         </div>
                         <span className="mb-5 text-red-500">중복 확인 하십시오.</span>
                         <input className="mb-5 border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500" type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
