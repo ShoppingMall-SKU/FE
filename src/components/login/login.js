@@ -26,16 +26,14 @@ export const Login = () => {
             .then(response => {
                 const accessToken = response.headers['authorization'];
 
+                console.log(accessToken);
+
                 if (!accessToken) {
                     alert("로그인에 실패했습니다.");
                     return;
                 }
-
-                if (!accessToken.result) {
-                    alert("로그인에 실패했습니다.");
-                    return;
-                }
-
+                
+                //localStorage.setItem("accessToken", accessToken);
                 setCookies('token', accessToken);
                 navigate('/');
             })
