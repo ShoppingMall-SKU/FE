@@ -10,7 +10,7 @@ export const SignUpComponents = () => {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
     const navigate = useNavigate();
-
+    const [checkEmail, setCheckEmail] = useState("중복확인 하십시오.");
     // 전화번호 입력 시 자동으로 '-' 추가
     const formatPhoneNumber = (input) => {
         // 숫자 이외의 문자 제거
@@ -41,8 +41,6 @@ export const SignUpComponents = () => {
         }
     }
 
-    
-
     const handleSignup = async () => {
         try {
             if (!email || !password || !passwordCheck || !name || !phone || !address) {
@@ -63,7 +61,7 @@ export const SignUpComponents = () => {
                 address
             };
 
-            const response = await axios.post('/api/user/signup', userData);
+            const response = await axios.post('http://localhost:8080/api/user/signup', userData);
             if (response.status === 200) {
                 alert("회원가입 성공");
                 navigate('/login');
@@ -88,7 +86,7 @@ export const SignUpComponents = () => {
                             <input className="w-9/12 mr-4 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
                             <button className="w-16" onClick={handleCheck}>중복 확인</button>
                         </div>
-                        <span className="mb-5 text-red-500">중복 확인 하십시오.</span>
+                        <span className="mb-5 text-red-500">{checkEmail}</span>
                         <input className="mb-5 border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500" type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <input className="mb-5 border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500" type="password" placeholder="비밀번호 확인" value={passwordCheck} onChange={(e) => setPasswordCheck(e.target.value)} />
                         <input className="mb-5 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="이름" value={name} onChange={(e) => setName(e.target.value)} />
@@ -113,5 +111,3 @@ export const SignUpComponents = () => {
         </div>
     );
 };
-
-export default SignUpComponents;

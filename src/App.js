@@ -8,6 +8,7 @@ import SignUp from "./pages/signUp";
 import Product from "./pages/product";
 import Basket from "./pages/basket";
 import axios from "axios"
+import {User_info} from "./components/user_info/user_info";
 
 
 function App() {
@@ -48,6 +49,12 @@ function App() {
                         path="/login"
                         element={
                             <SignIn/>
+                        }
+                    />
+                    <Route
+                        path="/user_info"
+                        element={
+                            <User_info/>
                         }
                     />
                     <Route

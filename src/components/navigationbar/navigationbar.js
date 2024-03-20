@@ -1,6 +1,33 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useCookies} from "react-cookie";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
-export const Navigationbar = ({ cart })=>{
+export const Navigationbar = ({ cart }) => {
+    const [cookies] = useCookies();
+    const [checkCookie ,setCheckCookie] = useState(!!cookies.token);
+    const navigate = useNavigate();
+    const logoutHandler = async () => {
+        try {
+            const token = cookies.token;
+            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            // 서버에 로그아웃 요청 보내기
+            const response = await axios.get('http://localhost:8080/api/user/logout');
+
+            // 응답을 받은 후에 상태 변경
+            setCheckCookie(false);
+            // 쿠키 삭제
+            document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            navigate('/');
+        } catch (error) {
+            console.error('로그아웃 요청 실패:', error);
+        }
+    };
+
+    useEffect(() => {
+        setCheckCookie(!!cookies.token);
+    }, [cookies.token]);
+
     return (
         <header className="w-full h-20 flex justify-around items-center shadow-md">
             <div className="flex items-center ml-4">
@@ -39,14 +66,28 @@ export const Navigationbar = ({ cart })=>{
                         )}
                     </div>
                 </Link>
-                <Link to="/login" className="flex items-center">
-                    <img
-                        src="/images/icon-user.svg"
-                        alt="user"
-                        className="w-12 h-10 mr-1"
-                    />
-                    <span className="text-sm text-gray-600">로그인</span>
-                </Link>
+                {checkCookie ? (
+                    <>
+                        <Link to="/user_info" className="flex items-center">
+                            <img
+                                src="/images/icon-user.svg"
+                                alt="user"
+                                className="w-12 h-10 mr-1"
+                            />
+                            <span className="text-sm text-gray-600">내정보</span>
+                        </Link>
+                        <button className="ml-8 border p-1 bg-red-400 rounded-xl text-white border-red--400" onClick={logoutHandler}>로그아웃</button>
+                    </>
+                ) : (
+                    <Link to="/login" className="flex items-center">
+                        <img
+                            src="/images/icon-user.svg"
+                            alt="user"
+                            className="w-12 h-10 mr-1"
+                        />
+                        <span className="text-sm text-gray-600">로그인</span>
+                    </Link>
+                )}
             </div>
         </header>
     );
