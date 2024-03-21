@@ -20,7 +20,7 @@ export const Cart = ({ cart, setCart, convertPrice }) => {
         if (type === "plus") {
             const cartItem = {
                 id: found.id,
-                image: found.image,
+                imf: found.imf,
                 name: found.name,
                 quantity: quantity,
                 price: found.price,
@@ -31,7 +31,7 @@ export const Cart = ({ cart, setCart, convertPrice }) => {
             if (quantity === 0) return;
             const cartItem = {
                 id: found.id,
-                image: found.image,
+                img: found.img,
                 name: found.name,
                 quantity: quantity,
                 price: found.price,

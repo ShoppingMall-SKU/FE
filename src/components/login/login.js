@@ -35,12 +35,14 @@ export const Login = () => {
                 
                 //localStorage.setItem("accessToken", accessToken);
                 setCookies('token', accessToken);
+                axios.defaults.headers.common['Authorization'] = accessToken;
                 navigate('/');
             })
             .catch(error => {
                 console.error("로그인 요청 실패:", error);
                 alert("로그인에 실패했습니다.");
             });
+
     };
 
     return (

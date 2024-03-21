@@ -12,6 +12,7 @@ export const Main = ({ convertPrice, products, setProducts })=>{
             const data = response.data;
 
             setProducts(data);
+            console.log(data);
         }
 
         axiosProduct();

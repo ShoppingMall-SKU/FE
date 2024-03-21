@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 
 export const Product = ({ product, convertPrice }) => {
-    const { id, name, status, provider, price, image } = product;
+    const { id, name, status, brand, price, img } = product;
 
     return (
         product && (
             <div className="flex flex-col">
                 <Link to={`/product/${id}`}>
                     <div className="w-96 h-96 rounded-10 mb-10">
-                        <img className="w-full h-full rounded-10 border border-gray-300" src={image} alt="product" />
+                        <img className="w-full h-full rounded-10 border border-gray-300" src={`http://localhost:8080${img}`} alt="product" />
                     </div>
                 </Link>
 
                 <div className="mb-5">
-                    <span className="text-sm leading-22 text-gray-600">{provider}</span>
+                    <span className="text-sm leading-22 text-gray-600">{brand}</span>
                 </div>
 
                 <div className="mb-10">

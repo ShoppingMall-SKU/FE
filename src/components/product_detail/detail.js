@@ -22,7 +22,7 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
         const idx = cart.indexOf(found);
         const cartItem = {
             id: product.id,
-            image: product.image,
+            img: product.img,
             status: product.status,
             name: product.name,
             quantity: quantity,
@@ -35,7 +35,7 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
     const handleCart = () => {
         const cartItem = {
             id: product.id,
-            image: product.image,
+            img: product.img,
             status: product.status,
             name: product.name,
             quantity: count,
@@ -65,7 +65,7 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
                 <main className="max-w-full mx-auto flex flex-col mb-16 xl:mb-0 xl:flex-row justify-center xl:items-start items-center mt-16">
                     <section className="xl:w-1/3 w-8/12 h-1/3 flex flex-col mr-10">
                         <div className="w-full h-full rounded-10 mb-10 overflow-hidden">
-                            <img src={product.image} alt="product" className="w-full h-full object-cover" />
+                            <img src={`http://localhost:8080${product.img}`} alt="product" className="w-full h-full object-cover" />
                         </div>
                     </section>
                     <section className="xl:w-1/3 w-8/12 flex flex-col ">

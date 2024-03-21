@@ -20,7 +20,7 @@ export const CartList = ({
             />
             <div className="flex w-80 items-center">
                 <div className="w-36 h-36 rounded-10">
-                    <img src={cart.image} alt="product-img" className="w-full h-full rounded-2xl" />
+                    <img src={`http://localhost:8080${cart.img}`} alt="product-img" className="w-full h-full rounded-2xl" />
                 </div>
                 <div className="ml-10 w-36">
                     <p className="text-xs leading-18 text-gray-800 mb-2">{cart.provider}</p>

@@ -11,6 +11,7 @@ export const SignUpComponents = () => {
     const [address, setAddress] = useState("");
     const navigate = useNavigate();
     const [checkEmail, setCheckEmail] = useState("중복확인 하십시오.");
+
     // 전화번호 입력 시 자동으로 '-' 추가
     const formatPhoneNumber = (input) => {
         // 숫자 이외의 문자 제거
@@ -76,7 +77,7 @@ export const SignUpComponents = () => {
 
     return (
         <div>
-            <div className="flex items-center justify-center h-screen">
+            <div className="flex items-center justify-center h-screen mt-10">
                 <div className="w-96 flex flex-col border bg-white px-6 py-14 shadow-md rounded-[4px]">
                     <div className="mb-8 flex justify-center">
                         <img className="w-24" src="/images/logo4.png" alt="logo" />
