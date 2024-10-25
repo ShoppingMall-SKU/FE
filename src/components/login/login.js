@@ -46,15 +46,27 @@ export const Login = () => {
     };
 
     return (
-        <div>
-            <div className="flex items-center justify-center h-screen">
-                <div className="w-96 flex flex-col border bg-white px-6 py-14 shadow-md rounded-[4px]">
+        <div className="flex justify-center items-center h-screen">
+
+        <div className="container text-center items-center w-7/12 flex mt-12 border shadow-md rounded-[4px]">
+            <span>
+                <div className="flex-1 border justify-end accent-gray-500">
+                    <img
+                         src="/images/mainimg.png"
+                         alt=""/>
+                </div>
+            </span>
+
+            <span>
+            <div className="flex-1 items-center h-1/2 w-1/2 justify-center">
+                <div className="w-96 flex flex-col bg-white px-6 py-14">
                     <div className="mb-8 flex justify-center">
-                        <img className="w-24" src="/images/logo4.png" alt="logo"/>
+                        <img className="w-24 mr-5" src="/images/logo4.png" alt="logo"/>
+                        {/*<p style={{ fontFamily: 'sb', fontSize : "large"}}>밀키트 쇼핑몰</p>*/}
                     </div>
                     <div className="flex text-sm rounded-md flex-col">
                         <input
-                            className="mb-5 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500"
+                            className="mb-5 border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500"
                             type="text" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)}/>
                         <input
                             className="border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500"
@@ -65,11 +77,13 @@ export const Login = () => {
                         className="mt-5 w-full border p-2 bg-gradient-to-r from-green-800 bg-gray-500 text-white rounded-[4px] hover:bg-slate-400 scale-105 duration-300"
                         type="submit" onClick={handlerLogin}>로그인
                     </button>
-                    <div className="mt-5 flex justify-end text-sm text-gray-600">
+                    <div className="mt-5 flex justify-center text-sm text-gray-600">
+                        <a href="/">홈으로 이동</a>
+                        <a className="ml-8 mr-8">|</a>
                         <a href="/signUp">회원가입</a>
                     </div>
                     <div className="flex justify-center mt-5 text-sm">
-                        <p className="text-gray-400">다른 방법으로 로그인하기</p>
+                        <p className="text-gray-400">소셜로그인으로 간편 로그인</p>
                     </div>
                     <div className="mt-5 flex justify-center gap-3">
                         <img className="h-7 grayscale cursor-pointer hover:grayscale-0 scale-105 duration-300"
@@ -78,6 +92,8 @@ export const Login = () => {
                     </div>
                 </div>
             </div>
+            </span>
+        </div>
         </div>
     );
 };

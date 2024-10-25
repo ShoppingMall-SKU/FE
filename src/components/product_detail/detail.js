@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProducts } from "../../service/fetcher";
-import axios from "axios";
 
 export const Detail = ({ convertPrice, cart, setCart }) => {
     const { id } = useParams();
@@ -50,13 +48,23 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
     useEffect(() => {
 
 
-        const axiosProductDetail = async () => {
-            const response = await axios.get(`http://localhost:8080/api/product/detail/${id}`);
-            const data = response.data;
-
-            setProduct(data);
-        };
-        axiosProductDetail();
+        // const axiosProductDetail = async () => {
+        //     const response = await axios.get(`http://localhost:8080/api/product/detail/${id}`);
+        //     const data = response.data;
+        //
+        //     setProduct(data);
+        // };
+        // axiosProductDetail();
+        setProduct({
+            id : 1,
+            name : "물건1",
+            price : 123244,
+            brand : "아무 브랜드",
+            img : "/images/image004.png",
+            status : "냉동",
+            sale : 30,
+            stock : 10
+        })
     }, [id, product.price]);
 
     return (
@@ -65,16 +73,41 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
                 <main className="max-w-full mx-auto flex flex-col mb-16 xl:mb-0 xl:flex-row justify-center xl:items-start items-center mt-16">
                     <section className="xl:w-1/3 w-8/12 h-1/3 flex flex-col mr-10">
                         <div className="w-full h-full rounded-10 mb-10 overflow-hidden">
-                            <img src={`http://localhost:8080${product.img}`} alt="product" className="w-full h-full object-cover" />
+                            <img src={product.img} alt="product" className="w-full h-full object-cover" />
                         </div>
                     </section>
                     <section className="xl:w-1/3 w-8/12 flex flex-col ">
-                        <div className="flex xl:mt-5 flex-col mb-5 xl:mb-28">
-                            <p className="text-sm mb-3 text-gray-600">{product.provider}</p>
-                            <p className="text-3xl mb-5  text-black">{product.name} / {product.status}</p>
-                            <p className="text-3xl text-black">
-                                {convertPrice(product.price + "")}<span className="text-base">원</span>
-                            </p>
+                        <div className="flex xl:mt-5 flex-col mb-5 xl:mb-10">
+                            <div className="mb-3">
+                                <span className="text-lg mb-2 text-gray-600" style={{fontFamily: 'sb'}}>{product.brand}</span>
+                                { product.stock > 10 ?
+                                    (<span></span>) :
+                                    (<span className="bg-red-600 text-white text-base ml-3 font-bold px-2 py-1 rounded-xl" style={{fontFamily: 'sb'}}>품절 임박 제품</span>)
+                                }
+                            </div>
+                            <div className="mb-3">
+                                <span className="text-3xl mb-5 text-black" style={{fontFamily: 'sb'}}>{product.name}</span>
+                                <span className="ml-3" style={{fontFamily: 'sb'}}> {product.status}보관 제품</span>
+                            </div>
+                            <div>
+                                {product.sale > 0 ? (
+                                        <>
+                                            <div>
+                                                <span className="text-m font-bold leading-30 text-red-600 line-through">{convertPrice(product.price)} 원</span>
+                                                <span className="text-m font-bold leading-30 text-red-600">  -{product.sale}%</span>
+                                            </div>
+
+                                            <span className="text-3xl font-bold leading-30 text-black">{convertPrice((product.price * ((100 - product.sale) / 100)))}</span>
+                                            <span className="text-base leading-20 text-black"> 원</span>
+                                        </>) :
+                                    (
+                                        <div className="mb-6">
+                                            <span className="text-3xl font-bold leading-30 text-black">{convertPrice(product.price)}</span>
+                                            <span className="text-base leading-20 text-black"> 원</span>
+                                        </div>
+                                    )
+                                }
+                            </div>
                         </div>
 
                         <div className="mb-5">
@@ -89,7 +122,7 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
                                 </svg>
                             </button>
-                            <div className="w-20 h-10 border border-gray-300 flex items-center justify-center">
+                            <div className="w-20 h-10 border border-gray-300 flex items-center justify-center rounded-2xl ml-3 mr-3">
                                 <span>{count}</span>
                             </div>
                             <button className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center" onClick={() => handleQuantity("plus")}>
@@ -107,7 +140,7 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
                                 <p className="text-sm text-gray-600 mr-1">총 수량</p>
                                 <p className="text-base text-green-600 mr-5">{count}개</p>
                                 <p className="text-2xl font-semibold text-green-600">
-                                    {convertPrice(product.price * count)}<span className="text-base">원</span>
+                                    {convertPrice((product.price * ((100 - product.sale) / 100)) * count)}<span className="text-base">원</span>
                                 </p>
                             </div>
                         </div>
