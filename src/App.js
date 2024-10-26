@@ -11,7 +11,6 @@ import axios from "axios"
 import {User_info} from "./components/user_info/user_info";
 import {NewProduct} from "./pages/newProduct";
 
-
 function App() {
 
     const [products, setProducts] = useState([]);
@@ -91,72 +90,72 @@ function App() {
 
 
         return (
-            <BrowserRouter>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                        <div>
-                            <Navigationbar cart={cart}/>
-                            <Home
-                                convertPrice={convertPrice}
-                                products={products}
-                                setProducts={setProducts}
-                            />
-                        </div>
-                        }
-                    />
-                    <Route
-                        path="/login"
-                        element={
-                            <SignIn/>
-                        }
-                    />
-                    <Route
-                        path="/user_info"
-                        element={
-                        <div>
-                            <Navigationbar cart={cart}/>
-                            <User_info/>
-                        </div>
-                        }
-                    />
-                    <Route
-                        path="/signUp"
-                        element={
-                            <SignUp/>
-                        }
-                    />
-                    <Route
-                        path="/product/:id"
-                        element={
-                        <div>
-                            <Navigationbar cart={cart}/>
-                            <Product
-                                convertPrice={convertPrice}
-                                cart={cart}
-                                setCart={setCart}
-                            />
-                        </div>
-                        }
-                    />
-                    <Route
-                        path="/cart"
-                        element={
-                            <Basket cart={cart} setCart={setCart} convertPrice={convertPrice}/>
-                        }
-                    />
-                    <Route
-                        path="/new"
-                        element={
+                <BrowserRouter>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
                             <div>
                                 <Navigationbar cart={cart}/>
-                                <NewProduct products={products} convertPrice = {convertPrice}/>
+                                <Home
+                                    convertPrice={convertPrice}
+                                    products={products}
+                                    setProducts={setProducts}
+                                />
                             </div>
-                        }
-                    />
-                </Routes>
-            </BrowserRouter>
+                            }
+                        />
+                        <Route
+                            path="/login"
+                            element={
+                                <SignIn/>
+                            }
+                        />
+                        <Route
+                            path="/user_info"
+                            element={
+                            <div>
+                                <Navigationbar cart={cart}/>
+                                <User_info/>
+                            </div>
+                            }
+                        />
+                        <Route
+                            path="/signUp"
+                            element={
+                                <SignUp/>
+                            }
+                        />
+                        <Route
+                            path="/product/:id"
+                            element={
+                            <div>
+                                <Navigationbar cart={cart}/>
+                                <Product
+                                    convertPrice={convertPrice}
+                                    cart={cart}
+                                    setCart={setCart}
+                                />
+                            </div>
+                            }
+                        />
+                        <Route
+                            path="/cart"
+                            element={
+                                <Basket cart={cart} setCart={setCart} convertPrice={convertPrice}/>
+                            }
+                        />
+                        <Route
+                            path="/new"
+                            element={
+                                <div>
+                                    <Navigationbar cart={cart}/>
+                                    <NewProduct products={products} convertPrice = {convertPrice}/>
+                                </div>
+                            }
+                        />
+                    </Routes>
+                </BrowserRouter>
         );
     }
 

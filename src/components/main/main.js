@@ -15,6 +15,9 @@ export const Main = ({ convertPrice, products, setProducts })=>{
       <div>
           <TabBar />
           <EventBanner/>
+          <div className="container mt-5 mx-auto text-4xl" style={{fontFamily:'sb'}}>
+              👋 이런 상품들이 있어요.
+          </div>
           <div className="max-w-screen-xl mx-auto mt-10 mb-12 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 place-items-center gap-x-10 gap-y-70">
               {products.map((product) => {
                   return (

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export const Detail = ({ convertPrice, cart, setCart }) => {
     const { id } = useParams();
@@ -14,6 +17,13 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
             setCount(count - 1);
         }
     };
+    const notify = async () => toast.success("상품이 장바구니에 추가 되었습니다.",
+        {
+            position: "bottom-right",
+            autoClose:3000,
+            hideProgressBar:true,
+            className:'mx-auto w-auto'
+        })
 
     const setQuantity = (id, quantity) => {
         const found = cart.filter((el) => el.id === id)[0];
@@ -29,6 +39,8 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
         };
         setCart([...cart.slice(0, idx), cartItem, ...cart.slice(idx + 1)]);
     };
+
+
 
     const handleCart = () => {
         const cartItem = {
@@ -146,10 +158,11 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
                         </div>
 
                         <div className="flex justify-between">
-                            <button className="w-96 h-14 mr-5 rounded-md bg-green-600 text-white text-base font-semibold">바로 구매</button>
-                            <button className="w-64 h-14 rounded-md bg-green-600 text-white text-base font-semibold" onClick={handleCart}>장바구니</button>
+                            <button className="w-96 h-14 mr-5 rounded-md bg-green-600 text-white text-base font-semibold hover:bg-green-700">바로 구매</button>
+                            <button className="w-64 h-14 rounded-md bg-green-600 text-white text-base font-semibold hover:bg-green-700" onClick={() => {handleCart(); notify()}}>장바구니</button>
                         </div>
                     </section>
+                    <ToastContainer className='font-semibold' autoClose={1500}/>
                 </main>
             </>
         )
