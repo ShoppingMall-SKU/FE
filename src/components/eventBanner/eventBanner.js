@@ -34,12 +34,12 @@ export const EventBanner = () => {
     }, []);
 
     return (
-        <div className="container mx-auto relative w-full">
-            <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+        <div className="max-w-screen-lg mx-auto relative ">
+            <div className="relative ml-3 mr-3 h-56 overflow-hidden rounded-lg md:h-96 flex items-center justify-center">
                 {images.map((slide, index) => (
                     <div
                         key={index}
-                        className={`absolute w-full h-full transition-opacity duration-700 ${
+                        className={`absolute block w-full h-full transition-opacity duration-700 ${
                             index === currentIndex ? 'opacity-100' : 'opacity-0'
                         }`}
                     >

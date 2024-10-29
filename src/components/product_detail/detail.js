@@ -83,7 +83,7 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
         product && (
             <>
                 <main className="max-w-full mx-auto flex flex-col mb-16 xl:mb-0 xl:flex-row justify-center xl:items-start items-center mt-16">
-                    <section className="xl:w-1/3 w-8/12 h-1/3 flex flex-col mr-10">
+                    <section className="xl:w-1/3 w-8/12 h-1/3 flex flex-col lg:mr-10">
                         <div className="w-full h-full rounded-10 mb-10 overflow-hidden">
                             <img src={product.img} alt="product" className="w-full h-full object-cover" />
                         </div>
@@ -162,7 +162,7 @@ export const Detail = ({ convertPrice, cart, setCart }) => {
                             <button className="w-64 h-14 rounded-md bg-green-600 text-white text-base font-semibold hover:bg-green-700" onClick={() => {handleCart(); notify()}}>장바구니</button>
                         </div>
                     </section>
-                    <ToastContainer className='font-semibold' autoClose={1500}/>
+                    <ToastContainer className='font-semibold mb-12' autoClose={1500}/>
                 </main>
             </>
         )

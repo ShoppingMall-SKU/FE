@@ -31,34 +31,31 @@ export const Navigationbar = ({ cart }) => {
     }, [cookies.token]);
 
     return (
-        <header className="w-full space-x-96 h-20 flex justify-center items-center shadow-md px-5">
-            <div className="flex items-center space-x-10">
+        <header className="w-full max-w-screen h-20 flex justify-center items-center shadow-md px-5">
+            <div className="flex w-full justify-between items-center space-x-5">
                 <Link to="/">
-                    <img src="/images/logo4.png" alt="logo" className="w-32 h-10"/>
+                    <img src="/images/logo4.png" alt="logo" className="w-32 lg:h-10 h-7"/>
                 </Link>
-                <div className="relative ml-4 mr-12">
+                <div className="flex relative lg:max-w-xl lg:w-full h-10 items-center justify-center">
                     <input
                         type="text"
                         placeholder="상품을 검색해보세요"
-                        className="h-12 pl-8 pr-10 border-2 border-green-600 rounded-lg text-xl focus:outline-none"
-                        style={{width:"200%"}}
+                        className="flex lg:max-w-screen-lg lg:w-full pl-3 text-sm placeholder:text-sm md:placeholder:text-base md:text-sm lg:placeholder:text-lg h-9 border-2 border-green-600 rounded-lg lg:text-xl focus:outline-none"
                     />
                     <FontAwesomeIcon
-                        className="absolute -right-64 top-1/2 transform -translate-y-1/2"
                         icon={faMagnifyingGlass}
-                        size="lg"
+                        className="flex ml-3 h-4 w-5 md:h-6 md:w-6 lg:h-8 lg:w-8"
                         style={{color: "#16a34a"}}
                     />
                 </div>
-            </div>
 
-            <div className="flex items-center  space-x-5">
+            <div className="flex items-end space-x-4">
                 <Link to="/cart" className="flex items-center">
-                    <img src="/images/icon-shopping-cart.svg" alt="cart" className="w-12 h-10"/>
-                    <span className="text-sm text-gray-600 ml-1">장바구니</span>
+                    <img src="/images/icon-shopping-cart.svg" alt="cart" className="lg:w-12 w-20"/>
+                    <span className="text-sm text-gray-600 ml-2 hidden md:inline">장바구니</span>
                     {cart.length >= 1 && (
                         <div
-                            className=" top-0 right-0 w-5 h-5 bg-red-600 rounded-full flex justify-center items-center">
+                            className="absolute z-10 px-2 py-2 right-11 top-6 w-2 h-2 lg:w-5 lg:h-5 lg:right-44 lg:top-4 bg-red-600 rounded-full flex justify-center items-center">
                             <p className="text-white text-xs">{cart.length}</p>
                         </div>
                     )}
@@ -66,8 +63,8 @@ export const Navigationbar = ({ cart }) => {
                 {checkCookie ? (
                     <>
                         <Link to="/user_info" className="flex items-center">
-                            <img src="/images/icon-user.svg" alt="user" className="w-12 h-10 mr-1"/>
-                            <span className="text-sm text-gray-600">내정보</span>
+                            <img src="/images/icon-user.svg" alt="user" className="w-20 mr-1"/>
+                            <span className="text-sm text-gray-600 hidden md:inline">내정보</span>
                         </Link>
                         <button
                             className="border p-1 bg-red-400 rounded-xl text-white"
@@ -78,10 +75,11 @@ export const Navigationbar = ({ cart }) => {
                     </>
                 ) : (
                     <Link to="/login" className="flex items-center">
-                        <img src="/images/icon-user.svg" alt="user" className="w-12 h-10 mr-1"/>
-                        <span className="text-sm text-gray-600">로그인</span>
+                        <img src="/images/icon-user.svg" alt="user" className="lg:w-12 w-20 mr-1"/>
+                        <span className="text-sm text-gray-600 hidden md:inline">로그인</span>
                     </Link>
                 )}
+            </div>
             </div>
         </header>
 

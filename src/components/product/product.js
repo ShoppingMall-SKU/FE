@@ -5,9 +5,9 @@ export const Product = ({ product, convertPrice }) => {
 
     return (
         product && (
-            <div className="flex flex-col mb-10">
+            <div className="container max-w-96 pl-7 pr-7 lg:pr-0 lg:pl-0 justify-center flex flex-col mb-8">
                 <Link to={`/product/${id}`}>
-                    <div className="w-96 h-96 rounded-10 mb-6">
+                    <div className="max-w-xl h-96 rounded-10 mb-6">
                         <img className="w-full h-full rounded-10 border border-gray-300" src={img} alt="product" />
                     </div>
                 </Link>
@@ -25,9 +25,8 @@ export const Product = ({ product, convertPrice }) => {
                         (<span className="text-3xl leading-22 text-black" style={{fontFamily: 'sb'}}> {name.slice(0, 10)} ...</span>) :
                         (<span className="text-3xl leading-22 text-black" style={{fontFamily: 'sb'}}>{name}</span>)
                     }
-                    <span>  / </span>
-                    <span className="text-base leading-22 text-black" style={{fontFamily: 'sb'}}>{status} 보관</span>
                 </div>
+                <div className="mb-2 text-base leading-22 text-black" style={{fontFamily: 'sb'}}>{status} 보관 제품</div>
 
                 <div className="mb-2">
                     <span className="text-base">남은 수량 : </span>
