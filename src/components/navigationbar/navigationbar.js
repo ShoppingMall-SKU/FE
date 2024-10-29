@@ -34,13 +34,13 @@ export const Navigationbar = ({ cart }) => {
         <header className="w-full max-w-screen h-20 flex justify-center items-center shadow-md px-5">
             <div className="flex w-full justify-between items-center space-x-5">
                 <Link to="/">
-                    <img src="/images/logo4.png" alt="logo" className="w-32 lg:h-10 h-7"/>
+                    <img src="/images/logo3.png" alt="logo" className="w-20 xl:w-20 xl:h-20 lg:h-10 h-7"/>
                 </Link>
                 <div className="flex relative lg:max-w-xl lg:w-full h-10 items-center justify-center">
                     <input
                         type="text"
                         placeholder="상품을 검색해보세요"
-                        className="flex lg:max-w-screen-lg lg:w-full pl-3 text-sm placeholder:text-sm md:placeholder:text-base md:text-sm lg:placeholder:text-lg h-9 border-2 border-green-600 rounded-lg lg:text-xl focus:outline-none"
+                        className="flex lg:max-w-screen-lg lg:py-6 lg:w-full pl-3 text-sm placeholder:text-sm md:placeholder:text-base md:text-sm lg:placeholder:text-lg h-9 border-2 border-green-600 rounded-lg lg:text-xl focus:outline-none"
                     />
                     <FontAwesomeIcon
                         icon={faMagnifyingGlass}
@@ -50,16 +50,17 @@ export const Navigationbar = ({ cart }) => {
                 </div>
 
             <div className="flex items-end space-x-4">
-                <Link to="/cart" className="flex items-center">
+                <Link to="/cart" className="flex items-center relative">
                     <img src="/images/icon-shopping-cart.svg" alt="cart" className="lg:w-12 w-20"/>
                     <span className="text-sm text-gray-600 ml-2 hidden md:inline">장바구니</span>
                     {cart.length >= 1 && (
                         <div
-                            className="absolute z-10 px-2 py-2 right-11 top-6 w-2 h-2 lg:w-5 lg:h-5 lg:right-44 lg:top-4 bg-red-600 rounded-full flex justify-center items-center">
+                            className="absolute -top-2 lg:right-12 -right-2 w-5 h-5 bg-red-600 rounded-full flex justify-center items-center">
                             <p className="text-white text-xs">{cart.length}</p>
                         </div>
                     )}
                 </Link>
+
                 {checkCookie ? (
                     <>
                         <Link to="/user_info" className="flex items-center">

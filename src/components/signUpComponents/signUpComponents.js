@@ -80,7 +80,7 @@ export const SignUpComponents = () => {
             <div className="flex items-center justify-center h-screen mt-10">
                 <div className="w-96 flex flex-col border bg-white px-6 py-14 shadow-md rounded-[4px]">
                     <div className="mb-8 flex justify-center">
-                        <img className="w-24" src="/images/logo4.png" alt="logo" />
+                        <img className="w-24" src="/images/logo3.png" alt="logo" />
                     </div>
                     <div className="flex text-sm rounded-md flex-col">
                         <div className="flex-row mb-1">

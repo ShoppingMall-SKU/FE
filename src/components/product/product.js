@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {wait} from "@testing-library/user-event/dist/utils";
 
 export const Product = ({ product, convertPrice }) => {
     const { id, name, status, brand, price, img, sale, stock } = product;
 
+
     return (
-        product && (
-            <div className="container max-w-96 pl-7 pr-7 lg:pr-0 lg:pl-0 justify-center flex flex-col mb-8">
+           product && (
+            <div
+                className="container shadow-xl rounded-2xl p-5 max-w-xs lg:max-w-screen-sm lg:max-h-screen pl-7 pr-7 lg:pr-4 lg:pl-4 justify-center flex flex-col mb-8">
                 <Link to={`/product/${id}`}>
-                    <div className="max-w-xl h-96 rounded-10 mb-6">
+                    <div className="w-64 h-80 lg:w-96 lg:h-96 rounded-10 mx-auto mb-5">
                         <img className="w-full h-full rounded-10 border border-gray-300" src={img} alt="product" />
                     </div>
                 </Link>

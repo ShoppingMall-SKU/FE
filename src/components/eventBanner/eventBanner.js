@@ -34,7 +34,7 @@ export const EventBanner = () => {
     }, []);
 
     return (
-        <div className="max-w-screen-lg mx-auto relative ">
+        <div className="max-w-screen-lg xl:max-w-screen-2xl mt-5 mx-auto relative ">
             <div className="relative ml-3 mr-3 h-56 overflow-hidden rounded-lg md:h-96 flex items-center justify-center">
                 {images.map((slide, index) => (
                     <div
