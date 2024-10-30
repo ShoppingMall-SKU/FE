@@ -10,6 +10,7 @@ import Basket from "./pages/basket";
 import axios from "axios"
 import {User_info} from "./components/user_info/user_info";
 import {NewProduct} from "./pages/newProduct";
+import {RegisterBySocialLogin} from "./components/signUpComponents/registerBySocialLogin";
 
 function App() {
 
@@ -124,6 +125,12 @@ function App() {
                             path="/signUp"
                             element={
                                 <SignUp/>
+                            }
+                        />
+                        <Route
+                            path="/register"
+                            element={
+                                <RegisterBySocialLogin/>
                             }
                         />
                         <Route

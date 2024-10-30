@@ -22,16 +22,17 @@ export const NewProduct = ({products, convertPrice}) => {
     return (
         <div className="justify-center items-center">
             <TabBar/>
-            <div className="text-center mt-5 justify-center items-center">
-                <p className="px-10 text-5xl" style={{fontFamily: 'sb'}}>
+            <hr/>
+            <div className="text-center mt-6 lg:mt-8 justify-center items-center">
+                <p className="px-10 text-4xl lg:text-5xl" style={{fontFamily: 'sb'}}>
                     신제품
                 </p>
             </div>
 
-            <div className="container mx-auto mt-10 mb-8 items-center text-end">
+            <div className="container pl-3 pr-3 lg:pl-0 lg:pr-0 mx-auto mt-10 mb-8 items-center text-end">
                 <hr/>
                 <div className="flex mt-7 justify-between mb-6">
-                    <label className="flex text-xl font-bold" style={{fontFamily: 'sans-serif'}}>
+                    <label className="flex text-lg lg:text-xl font-bold" style={{fontFamily: 'sans-serif'}}>
                         총 {filteredProducts.length}개의 상품이 있습니다.
                     </label>
                     <div className="flex space-x-4">
@@ -52,7 +53,7 @@ export const NewProduct = ({products, convertPrice}) => {
 
 
             <div
-                className="max-w-screen-xl mx-auto mt-10 mb-12 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 place-items-center gap-x-10 gap-y-70">
+                className={`container max-w-screen-lg xl:max-w-screen-2xl mx-auto mt-6 mb-12 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 place-items-center gap-x-10 gap-y-10 transition-opacity duration-500`}>
                 {filteredProducts.map((product) => {
                     return (
                         <Product

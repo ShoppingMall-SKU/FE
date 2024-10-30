@@ -2,6 +2,7 @@ import axios from "axios";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import { useCookies } from "react-cookie";
+import {toast, ToastContainer} from "react-toastify";
 
 export const Login = () => {
 
@@ -10,10 +11,18 @@ export const Login = () => {
     const [cookies, setCookies] = useCookies();
 
     const navigate = useNavigate();
+
+    const notify = () => toast.error("이메일과 비밀번호를 입력하십시오.",
+        {
+            position: "top-center",
+            hideProgressBar:true,
+            autoClose :1500,
+            className:'mx-auto w-80 lg:w-96 my-8 lg:my-auto',
+        })
     const handlerLogin = () => {
 
         if (email.length === 0 || password.length === 0) {
-            alert('이메일과 비밀번호를 입력하세요.');
+            notify();
             return;
         }
 
@@ -46,11 +55,13 @@ export const Login = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex w-full justify-center items-center h-screen">
 
-        <div className="container text-center items-center w-7/12 flex mt-12 border shadow-md rounded-[4px]">
-            <span>
-                <div className="flex-1 border justify-end accent-gray-500">
+            <ToastContainer className="lg:max-w-screen-2xl"/>
+
+        <div className="container text-center items-center lg:w-7/12 flex mt-12 lg:border lg:shadow-md rounded-[4px]">
+            <span className="hidden md:block">
+                <div className="flex-1 border lg:justify-end accent-gray-500">
                     <img
                          src="/images/mainimg.png"
                          alt=""/>
@@ -58,10 +69,10 @@ export const Login = () => {
             </span>
 
             <span>
-            <div className="flex-1 items-center h-1/2 w-1/2 justify-center">
-                <div className="w-96 flex flex-col bg-white px-6 py-14">
+            <div className="flex mx-auto lg:flex-1 w-full items-center h-1/2 lg:w-full justify-center">
+                <div className="mx-auto w-screen lg:w-96 flex flex-col bg-white px-6 py-14">
                     <div className="mb-8 flex justify-center">
-                        <img className="w-24 mr-5" src="/images/logo4.png" alt="logo"/>
+                        <img className="w-24 mr-5" src="/images/logo3.png" alt="logo"/>
                         {/*<p style={{ fontFamily: 'sb', fontSize : "large"}}>밀키트 쇼핑몰</p>*/}
                     </div>
                     <div className="flex text-sm rounded-md flex-col">

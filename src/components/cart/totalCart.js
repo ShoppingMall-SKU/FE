@@ -1,18 +1,21 @@
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 
-export const TotalCart = ({ total, setTotal, cart, convertPrice, found, effect, deps }) => {
+export const TotalCart = ({ total, setTotal, cart, convertPrice, found, sale, deps }) => {
+
+    const [saled, setSale] = useState(0);
+    const [sum, setSum] = useState(0);
+    const [result, setResult] = useState(0);
 
     useEffect(() => {
         if (found) {
             const temp = found.filter((item) => item.length !== 0);
-            const sum = temp.map((item) => item[0].price * item[0].quantity);
-            const reducer = (acc, cur) => acc + cur;
+            setSum(temp.map((item) => item[0].price * item[0].quantity));
+            setSale(temp.map((item) => Math.round(item[0].price * item[0].sale * 0.01) * item[0].quantity));
+
             if (sum.length === 0) {
                 setTotal(0);
                 return;
             }
-            const itemTotal = sum.reduce(reducer);
-            setTotal(itemTotal);
         } else {
             setTotal(0);
         }
@@ -54,31 +57,35 @@ export const TotalCart = ({ total, setTotal, cart, convertPrice, found, effect, 
 
 
     return (
-        <div className="max-w-4xl xl:max-w-7xl mb-12 h-40 bg-gray-100 rounded-xl mx-auto mt-10 grid grid-cols-7 items-center justify-items-center">
-            <div className="text-center">
-                <p className=" text-black mb-3">총 상품금액</p>
-                <p className="text-2xl text-black">{convertPrice(total)}</p>
+        <div className="max-w-4xl lg:max-w-5xl xl:max-w-7xl mb-12 h-50 lg:h-40 bg-gray-100 rounded-xl mx-auto mt-10 flex flex-col lg:flex-row gap-x-12 justify-center items-center justify-items-center">
+            <div className="mt-5 lg:mt-0 flex flex-row items-center justify-center gap-x-6 lg:">
+                <div className="text-center">
+                    <p className="text-start leading-7 mb-3">총 상품금액</p>
+                    <p className="text-2xl font-semibold text-black mb-5 lg:mb-0">{convertPrice(sum)}</p>
+                </div>
+                <div className="flex items-center justify-center relative w-9 h-9 rounded-full bg-white lg:mb-0">
+                    <img src="/images/icon-minus-line.svg" alt="minus" className="flex size-5 rounded-full bg-white" />
+                </div>
+                <div>
+                    <p className="mb-3 text-start text-black">상품 할인</p>
+                    <p className="text-2xl font-semibold text-center mb-5 lg:mb-0">{convertPrice(saled)}원</p>
+                </div>
+                <div className=" flex relative w-9 h-9 rounded-full bg-white items-center justify-center">
+                    <img src="/images/icon-plus-line.svg" alt="plus" className="flex size-5" />
+                </div>
             </div>
-            <div className="relative w-9 h-9 rounded-full bg-white">
-                <img src="/images/icon-minus-line.svg" alt="minus" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white" />
-            </div>
-            <div>
-                <p className="mb-3 text-black">상품 할인</p>
-                <p className="text-2xl text-black">0원</p>
-            </div>
-            <div className="relative w-9 h-9 rounded-full bg-white">
-                <img src="/images/icon-plus-line.svg" alt="plus" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white" />
-            </div>
-            <div>
+
+            <div className="lg:mt-0">
                 <p className="text-black mb-3">배송비</p>
-                <p className="text-2xl text-black">0원</p>
+                <p className="text-2xl mb-5 text-black text-center">0원</p>
+            </div>
+
+            <div className="ml-10 mt-5 lg:mt-0">
+                <p className="font-bold leading-20 text-black mb-3">총 결제 예정 금액</p>
+                <p className="text-4xl font-bold text-red-600">{convertPrice(sum - saled)}</p>
             </div>
             <div>
-                <p className="font-bold leading-20 text-black mb-3">결제 예정 금액</p>
-                <p className="text-4xl font-bold text-red-600">{convertPrice(total)}</p>
-            </div>
-            <div>
-                <button className="h-10 w-28 text-white bg-green-500 rounded-xl" onClick={onClickPayment}>결제하기</button>
+                <button className="mt-5 mb-5 lg:mt-0 lg:mb-0 btn btn-success h-10 w-28 text-white bg-green-500 rounded-xl" onClick={onClickPayment}>결제하기</button>
             </div>
         </div>
     );

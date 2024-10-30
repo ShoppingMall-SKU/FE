@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {wait} from "@testing-library/user-event/dist/utils";
 
 export const Product = ({ product, convertPrice }) => {
     const { id, name, status, brand, price, img, sale, stock } = product;
 
+
     return (
-        product && (
-            <div className="flex flex-col mb-10">
+           product && (
+            <div
+                className="container shadow-xl rounded-2xl p-5 max-w-xs lg:max-w-screen-sm lg:max-h-screen pl-7 pr-7 lg:pr-4 lg:pl-4 justify-center flex flex-col mb-8">
                 <Link to={`/product/${id}`}>
-                    <div className="w-96 h-96 rounded-10 mb-6">
+                    <div className="w-64 h-80 lg:w-72 lg:h-72 xl:w-96 xl:h-96 rounded-10 mx-auto mb-5">
                         <img className="w-full h-full rounded-10 border border-gray-300" src={img} alt="product" />
                     </div>
                 </Link>
@@ -21,13 +25,12 @@ export const Product = ({ product, convertPrice }) => {
                 </div>
 
                 <div className="mb-3">
-                    {name.length > 12 ?
-                        (<span className="text-3xl leading-22 text-black" style={{fontFamily: 'sb'}}> {name.slice(0, 10)} ...</span>) :
+                    {name.length > 10 ?
+                        (<span className="text-3xl leading-22 text-black" style={{fontFamily: 'sb'}}> {name.slice(0, 8)} ...</span>) :
                         (<span className="text-3xl leading-22 text-black" style={{fontFamily: 'sb'}}>{name}</span>)
                     }
-                    <span>  / </span>
-                    <span className="text-base leading-22 text-black" style={{fontFamily: 'sb'}}>{status} 보관</span>
                 </div>
+                <div className="mb-2 text-base leading-22 text-black" style={{fontFamily: 'sb'}}>{status} 보관 제품</div>
 
                 <div className="mb-2">
                     <span className="text-base">남은 수량 : </span>

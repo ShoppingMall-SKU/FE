@@ -50,7 +50,7 @@ const TabBar = ({products}) => {
     };
 
     return (
-        <div className="flex m-2">
+        <div className="flex p-1 justify-between space-x-0 shadow-md">
             {isSidebarOpen && (
                 <div
                     className={`fixed inset-0 bg-black z-10 transition-opacity duration-300 ease-in-out ${
@@ -163,14 +163,14 @@ const TabBar = ({products}) => {
 
 
             </div>
-            <div className="flex-1 flex">
-                <button onClick={toggleSidebar} className="p-2 ml-8">
-                    <FontAwesomeIcon icon={faBars} size="xl" color="black"/>
+            <div className="flex flex-auto space-x-1.5">
+                <button onClick={toggleSidebar} className="p-2 ml-4">
+                    <FontAwesomeIcon icon={faBars} className="h-4 w-5 md:h-6 md:w-6 lg:h-8 lg:w-8" color="black"/>
                 </button>
                 {tabs.map((tab) => (
                     <button
                         key={tab.value}
-                        className="p-2 text-center mt-1 text-gray-800 hover:bg-gray-200 rounded-xl flex-1 ml-5 mr-5"
+                        className="p-2 text-center mt-1 text-gray-800 hover:bg-gray-200 rounded-xl flex-1 ml-5 mr-5 text-xs md:text-base lg:text-lg"
                         onClick={() => {
                             setActiveTab(tab.value);
                             navigate(tab.path); // 직접 navigate 호출

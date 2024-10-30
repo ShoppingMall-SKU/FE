@@ -2,6 +2,15 @@
   text-align: center;
 }
 
+/*@media screen and (max-width: 390px) {*/
+/*  .body {*/
+/*    margin: 0 auto; !* 수평 중앙 정렬 *!*/
+/*    width: 100%;    !* 필요에 따라 폭 설정 *!*/
+/*    max-width: 390px; !* 최대 폭 설정 *!*/
+/*  }*/
+/*}*/
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
