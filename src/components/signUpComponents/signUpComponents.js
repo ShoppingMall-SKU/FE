@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import DaumPostcodeEmbed from "react-daum-postcode";
+import {toast, ToastContainer} from "react-toastify";
+import async from "async";
 
 export const SignUpComponents = () => {
     const [email, setEmail] = useState("");
@@ -8,9 +11,21 @@ export const SignUpComponents = () => {
     const [passwordCheck, setPasswordCheck] = useState("");
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
-    const [address, setAddress] = useState("");
+    const [streetAdr, setAddress] = useState("");
+    const [detailAdr, setDetailAddress] = useState("");
+    const [zipcode, setZipCode] = useState("");
     const navigate = useNavigate();
     const [checkEmail, setCheckEmail] = useState("중복확인 하십시오.");
+    const [isProcessing, setIsPrecessing] = useState(true);
+
+    const notify = async (data, state) => {
+        if(state === 'error') {
+            toast.error(data, {position: "top-center", hideProgressBar: true, autoClose: 1500, className: 'mx-auto w-80 lg:w-auto lg:my-auto my-12'})}
+        else if(state === 'success') {
+            toast.success(data, {position: "top-center", hideProgressBar: true, autoClose: 1500, className: 'mx-auto w-80 lg:w-auto lg:my-auto my-12'});
+        }
+    };
+
 
     // 전화번호 입력 시 자동으로 '-' 추가
     const formatPhoneNumber = (input) => {
@@ -27,88 +42,165 @@ export const SignUpComponents = () => {
         setPhone(formattedPhoneNumber);
     };
 
-    const handleCheck = async () => {
-        if(!email) {
-            alert("이메일을 입력하십시오.");
-            return;
-        }
-        const response = await axios.get(`http://localhost:8080/api/user/check/email/${email}`)
-        if (response.data) {
-            setCheckEmail("사용 가능한 이메일 입니다.")
-        }
-        else {
-            alert("해당 이메일이 이미 존재합니다.")
-            return;
-        }
-    }
-
-    const handleSignup = async () => {
-        try {
-            if (!email || !password || !passwordCheck || !name || !phone || !address) {
-                alert('모든 정보를 입력하세요.');
+        const handleCheck = async () => {
+            if (!email) {
+                await notify("이메일을 입력하십시오.", 'error');
                 return;
             }
-
-            if (password !== passwordCheck) {
-                alert('비밀번호가 일치하지 않습니다.');
-                return;
-            }
-
-            const userData = {
-                name,
-                password,
-                phone,
-                email,
-                address
-            };
-
-            const response = await axios.post('http://localhost:8080/api/user/signup', userData);
-            if (response.status === 200) {
-                alert("회원가입 성공");
-                navigate('/login');
+            const response = await axios.get(`http://localhost:8080/api/user/check/email/${email}`)
+            if (response.data) {
+                setCheckEmail("사용 가능한 이메일 입니다.")
             } else {
-                alert("회원가입에 실패했습니다.");
+                await notify("해당 이메일이 이미 존재합니다.", 'error')
+                return;
             }
-        } catch (error) {
-            console.error("회원가입 요청 실패:", error);
-            alert("회원가입에 실패했습니다.");
         }
+
+        const handleSignup = async () => {
+            setIsPrecessing(false);
+            try {
+                if (!email || !password || !passwordCheck || !name || !phone || !streetAdr) {
+                    await notify('모든 정보를 입력하세요.', 'error');
+                    setIsPrecessing(true);
+                    return;
+                }
+
+                if (password !== passwordCheck) {
+                    await notify('비밀번호가 일치하지 않습니다.','error');
+                    setIsPrecessing(true);
+                    return;
+                }
+
+                const userData = {
+                    name,
+                    password,
+                    phone,
+                    email,
+                    streetAdr,
+                    detailAdr,
+                    zipcode
+                };
+
+                const response = await axios.post('http://localhost:8080/api/user/signup', userData);
+                if (response.status === 200) {
+                    await notify("회원가입 성공에 성공했습니다.");
+                    navigate('/login');
+                } else {
+                    await notify("회원가입에 실패했습니다.", 'error');
+                }
+            } catch (error) {
+                console.error("회원가입 요청 실패:", error);
+                await notify("회원가입에 실패했습니다.");
+            }
+        };
+
+    const handleComplete = (data) => {
+        // 시.도 저장
+        const q1 = (data.sido);
+        // 구.군 저장
+        const q2 = (
+            data.sigungu.length > 3
+                ? data.sigungu.split("").splice(0, 3).join("")
+                : data.sigungu
+        );
+
+        setZipCode(data.zonecode);
+
+        // 상세주소 앞 2단어 제외하고 저장 ('서울 강남구' 제외하고 저장)
+        let splitAddress = data.address.split(" ").splice(2).join(" ");
+        setAddress(" " + q1 + " " + q2 + " " + splitAddress);
+        handleModal();
     };
 
-    return (
-        <div>
-            <div className="flex items-center justify-center h-screen mt-10">
-                <div className="w-96 flex flex-col border bg-white px-6 py-14 shadow-md rounded-[4px]">
-                    <div className="mb-8 flex justify-center">
-                        <img className="w-24" src="/images/logo3.png" alt="logo" />
-                    </div>
-                    <div className="flex text-sm rounded-md flex-col">
-                        <div className="flex-row mb-1">
-                            <input className="w-9/12 mr-4 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
-                            <button className="w-16" onClick={handleCheck}>중복 확인</button>
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const handleModal = () => {
+        setModalOpen(!modalOpen);
+    }
+
+    const handleIsProcessing = () => {
+        setIsPrecessing(false);
+        const timer = setTimeout(() => {
+            setIsPrecessing(true);
+        }, 1500); // 3초 후 실행
+        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 클리어
+    }
+
+        return (
+            <div>
+                <ToastContainer/>
+                <div className="flex items-center justify-center h-screen mt-10">
+                    <div className="max-w-80 lg:w-96 flex flex-col border bg-white px-6 py-14 shadow-md rounded-[4px]">
+                        <div className="mb-8 flex justify-center">
+                            <img className="w-24" src="/images/logo3.png" alt="logo"/>
                         </div>
-                        <span className="mb-5 text-red-500">{checkEmail}</span>
-                        <input className="mb-5 border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500" type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        <input className="mb-5 border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500" type="password" placeholder="비밀번호 확인" value={passwordCheck} onChange={(e) => setPasswordCheck(e.target.value)} />
-                        <input className="mb-5 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="이름" value={name} onChange={(e) => setName(e.target.value)} />
-                        <input className="mb-1 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="tel" placeholder="전화번호 (예: 010-1234-5678)" maxLength={13} value={phone} onChange={handlePhoneChange} />
-                        <span className="mb-5">숫자로만 적어주세요.</span>
-                        <input className="rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500" type="text" placeholder="주소" value={address} onChange={(e) => setAddress(e.target.value)} />
-                    </div>
-                    <button className="mt-5 w-full border p-2 bg-gradient-to-r from-green-800 bg-gray-500 text-white rounded-[4px] hover:bg-slate-400 scale-105 duration-300" type="submit" onClick={handleSignup}>회원가입</button>
-                    <div className="mt-5 flex justify-end text-sm text-gray-600">
-                        <a href="/login">로그인</a>
-                    </div>
-                    <div className="flex justify-center mt-5 text-sm">
-                        <p className="text-gray-400">다른 방법으로 로그인하기</p>
-                    </div>
-                    <div className="mt-5 flex justify-center gap-3">
-                        <img className="h-7 grayscale cursor-pointer hover:grayscale-0 scale-105 duration-300"
-                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFbUlEQVRoge1ZXWwUVRT+zszs2nZbiUARui2b1lCgJAiWFAMRIoEHFYOtqSL4wAMQGyDxwUQMmiAhSh+NbRFN1AeaQGpacZUHTIjRItLQpCApPw0GdttSUihIty3dnZnjw5T+7Nz52c4WH+j3NHvvd875zt479+cMMI1pPNmgdDjhSshDaqiMSX8ZjFIGLQIwD0D2CCUGoJvAV0FoJcinM5feaKH90L3G9pTA4Ka8Al1SdgF4F0AwRfNOAEcl0mqzGrs6J6thUgn0V87NheY/SIxtAPyTDT6COAPfsqp+8nS4+06qxiknEKsIbQHzlwBmpmrrgLsM3p3TFD2WipHrBHhnqS/W21tHwPbUtbkHA0eyc3P30NetCTd8Vwnw63lZA4r8A0CveJPnEoyTAU2tpHD3oBNVcvS1s9T3WMUDAOHVAVk5wZVLHN8vxwRivb11j1X8IxDWx9T+L5xpNoiVh7YCfDR9qlIHE2/OaYwet+q3TOBBeXCWBPkKgNlTosw9+nRVXWi1xFpOISL5M/z/4gFgpiz7PrXqFI7AYEUwX2f5Ohw2KXnZGiirXoO0uAzSrLkAAL2vB3p7C9TmMLSLzV6Ej0dcVpQFmQ3/RJI7FBFbZ3k3bMRLwSL4q6ohl5SZ+/KKIOUVQVm/GVp7C+I1H0DvuelFPAD4NVWtAvBRcodpBHg/pIEL828CyBd5kpe8iKf2fgMKPO0qsnalFQ/3vQkwp6jZhK6AEglRA7TxjaYRGLoQWgmwULwULJooPhFH4lQ91D9OQI9cNTgFxVDWlsO3YQv07usYrt6RDvEAEBxK5JcCnS22CRhHYvHi5K+qHhXPfT14eHAb9BuXJ3D0jjbEO9qg/noMfO82+EGfK3WBRmOaDVSELDk6SesA2CegM1aI5MvPvzQ25xNxofgJfm5a900WBJQmt5mWUQIVi4yV1RtHnxOn6m3FTxUYWJjcJlqF5omMpcVjK476+4/CAI+mgRX0rusY2rPOlj++TTCdTNpEG1m2oA0069nRZ4522Aq1Ao3sFR6Qk9wg3AemDPrE1Wj8P+zmJRZBlEAMgtsW370NChYBAKhgAbijzWQoCi4tfAGZnzcZPvp6UhInQL/Jv4B0S2SpXx5bvZS15a4jKmvGuHp7iw3TFUzaTAkw+JrIUm0Ojz77NmyBVFjiGE0qXALfhnfGfJwJW3IHKkKO04eAq6YYpgbCeZGxdrEZWvs544fPj4x939kmIRWWIOPj7wHFZ9hfOgvt7z9tBTqBYdYm2Afk01YO4nV7wbF/Dd7Mucis/gn+7QcgFS8HZQSAjCxIxcvh334AmYdOgJ6ZYwSO3Uf88F5P4gGAiE3arA5zNwAUiJzIJSuN81D2DFdBOXYfw4d2QPM6/5kjgWXRwuRqnnkEDEK9lR+t/RwefrgJ2qW/HGNql84aXO8vLyBRvagU6e1Cs3Q1lFUbIZWUgWYbmyTfuWVcaM6EPc/5cRiWFP25rIbOruQOyztxf/n8wwS8ly4FXkDENYHG6B5Rn+WdWFf0fQBSrlVOAe5qCc3yTmyZwIyGzj4GC7N+nGCgyq7oa1vYymmKHmPgSPpluQOBa3OaIg12HMfKXLYS2cVE4vPz1OKXrHvR951IjglQA7TsRGIrGCfTo8sVfg6o6lv0G1QnomMCAEDh7sHAnNw3GPjKuzaHWODawL1IuZvKtMFPEf0VBW8TUw3SXrWjXgbvcprzyXA1AuOR0xg9rkNbREx1AIZTtRdgmIhrNEVblKp4wOtHvsr8oK5KuwFshcXZyQZREI5Ksl4r2mHdIj2fWfdDGmrLX6GTtI6A0pHqQRATPrNSJ4GvMXCeiE9nLY22puMz6zSm8aTjPy9i6LxlaK5BAAAAAElFTkSuQmCC"
-                             alt=""/>
+                        <div className="flex text-sm rounded-md flex-col gap-x-4">
+                            <div className="flex-row max-w-96 mb-5 items-center justify-between">
+                                <input
+                                    className="w-7/12 mr-4 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500"
+                                    type="text" placeholder="이메일" value={email}
+                                    onChange={(e) => setEmail(e.target.value)}/>
+                                <button className="btn btn-sm w-24 h-10" onClick={handleCheck}>중복 확인</button>
+                            </div>
+
+                            <input
+                                className="mb-5 border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500"
+                                type="password" placeholder="비밀번호" value={password}
+                                onChange={(e) => setPassword(e.target.value)}/>
+                            <input
+                                className="mb-5 border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-green-500"
+                                type="password" placeholder="비밀번호 확인" value={passwordCheck}
+                                onChange={(e) => setPasswordCheck(e.target.value)}/>
+                            <input
+                                className="mb-5 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500"
+                                type="text" placeholder="이름" value={name} onChange={(e) => setName(e.target.value)}/>
+                            <input
+                                className="mb-1 rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-green-500"
+                                type="tel" placeholder="전화번호 (예: 010-1234-5678)" maxLength={13} value={phone}
+                                onChange={handlePhoneChange}/>
+                            <span className="mb-5">숫자로만 적어주세요.</span>
+
+                            <div className="flex justify-center items-center gap-x-5">
+                                <input
+                                    className="flex rounded-[4px] w-8/12 text-gray-400 border p-3 hover:outline-none focus:outline-none hover:border-green-500"
+                                    type="text" placeholder="주소" value={streetAdr}
+                                    onChange={(e) => setAddress(e.target.value)}
+                                    disabled={true}
+                                />
+                                <button className="flex btn btn-sm h-10 border w-24 p-3 text-center" onClick={handleModal}>
+                                    주소 검색
+                                </button>
+                            </div>
+
+                            <input
+                                className="flex rounded-[4px] mt-5 border p-3 hover:outline-none focus:outline-none hover:border-green-500"
+                                type="text" placeholder="상세 주소를 입력해주세요" value={detailAdr}
+                                onChange={(e) => setDetailAddress(e.target.value)}
+                            />
+                        </div>
+                        <button
+                            className="mt-5 w-full border p-2 bg-gradient-to-r from-green-800 bg-gray-500 text-white rounded-[4px] hover:bg-slate-400 scale-105 duration-300"
+                            type="submit" onClick={handleSignup}>
+                            {isProcessing ? ("회원가입") : (
+                                <span className="loading loading-spinner loading-xs"></span>
+                            )}
+                        </button>
+                        <div className="mt-5 flex justify-end text-sm text-gray-600">
+                            <a href="/login">로그인</a>
+                        </div>
+                        {modalOpen && (
+                            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                                <div className="modal-box bg-white p-5 rounded shadow-lg">
+                                    <DaumPostcodeEmbed onComplete={handleComplete}/>
+                                    <button onClick={handleModal}
+                                            className="mt-3 w-full border p-2 bg-gray-500 text-white rounded">
+                                        닫기
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        )
 };

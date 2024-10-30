@@ -53,7 +53,7 @@ export const NewProduct = ({products, convertPrice}) => {
 
 
             <div
-                className="max-w-screen-xl mx-auto mt-10 mb-12 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 place-items-center gap-x-10 gap-y-70">
+                className={`container max-w-screen-lg xl:max-w-screen-2xl mx-auto mt-6 mb-12 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 place-items-center gap-x-10 gap-y-10 transition-opacity duration-500`}>
                 {filteredProducts.map((product) => {
                     return (
                         <Product

@@ -45,7 +45,8 @@ export const Detail = ({convertPrice, cart, setCart}) => {
             name: product.name,
             quantity: quantity,
             price: product.price,
-            provider: product.provider,
+            sale: product.sale,
+            brand: product.brand,
         };
         setCart([...cart.slice(0, idx), cartItem, ...cart.slice(idx + 1)]);
     };
@@ -58,8 +59,9 @@ export const Detail = ({convertPrice, cart, setCart}) => {
             status: product.status,
             name: product.name,
             quantity: count,
+            sale:product.sale,
             price: product.price,
-            provider: product.provider,
+            brand: product.brand,
         };
         const found = cart.find((el) => el.id === cartItem.id);
         if (found) setQuantity(cartItem.id, found.quantity + count);
@@ -111,8 +113,8 @@ export const Detail = ({convertPrice, cart, setCart}) => {
                     ) : (
                         <>
                             <main
-                                className={`container lg:shadow-2xl rounded-3xl max-w-96 mx-auto flex flex-col mb-16 lg:mt-16 lg:max-w-screen-2xl lg:pt-12 xl:mb-0 xl:flex-row justify-center xl:items-start items-center mt-10`}>
-                                <section className="xl:w-1/3 w-11/12 h-1/3 flex flex-col lg:mr-36">
+                                className={`container lg:shadow-2xl rounded-3xl max-w-96 mx-auto flex flex-col lg:flex-row  mb-16 lg:mt-16 lg:max-w-screen-lg lg:pt-12 xl:mb-0 xl:flex-row justify-center items-center mt-10`}>
+                                <section className="xl:w-1/3 w-11/12 lg:w-96 lg:h-96 h-1/3 flex flex-col lg:mr-32 xl:mr-36">
                                     <div className="w-full h-full rounded-10 mb-10 overflow-hidden">
                                         <img src={product.img} alt="product" className="w-full h-full object-cover"/>
                                     </div>

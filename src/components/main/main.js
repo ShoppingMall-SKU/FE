@@ -35,7 +35,7 @@ export const Main = ({ convertPrice, products, setProducts })=>{
               className={`container max-w-screen-lg xl:max-w-screen-2xl mx-auto mt-6 mb-12 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 place-items-center gap-x-10 gap-y-10 transition-opacity duration-500 ${isLoading ? 'opacity-70' : 'opacity-100'}`}>
               {isLoading
                   ? Array.from({length: 6}).map((_, index) => (
-                      <div key={index} className="flex w-80 lg:w-96 flex-col gap-4 animate-pulse">
+                      <div key={index} className="flex w-80 h-80 lg:w-72 lg:h-72 xl:w-96 xl:h-96 flex-col gap-4 animate-pulse">
                           <div className="bg-gray-200 h-72 lg:h-80 w-full rounded-md"></div>
                           <div className="bg-gray-200 h-4 w-28 rounded-md"></div>
                           <div className="bg-gray-200 h-4 w-full rounded-md"></div>
