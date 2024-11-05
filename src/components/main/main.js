@@ -16,7 +16,7 @@ export const Main = ({ convertPrice })=>{
 
         axiosInstance.get('/api/product/list')
             .then(res => {
-                console.log(res.data.data);
+                //console.log(res.data.data);
                 setProducts(res.data.data);
                 setIsLoading(false);
             }).catch(err => {
