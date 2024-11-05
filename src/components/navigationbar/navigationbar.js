@@ -1,34 +1,45 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useCookies} from "react-cookie";
 import {useEffect, useState} from "react";
-import axios from "axios";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import axiosInstance from "../../service/axiosInstance";
+import {toast} from "react-toastify";
 
 export const Navigationbar = ({ cart }) => {
-    const [cookies] = useCookies();
-    const [checkCookie ,setCheckCookie] = useState(!!cookies.token);
+
+    const [cookies,setCookies, removeCookies] = useCookies(["Authorization"]);
+    const [checkCookie, setCheckCookie] = useState(false);
     const navigate = useNavigate();
-    const logoutHandler = async () => {
-        try {
-            // const token = cookies.token;
-            // axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-            // // 서버에 로그아웃 요청 보내기
-            // const response = await axios.get('http://localhost:8080/api/user/logout');
-            //
-            // // 응답을 받은 후에 상태 변경
-            // setCheckCookie(false);
-            // // 쿠키 삭제
-            // document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            navigate('/');
-        } catch (error) {
-            console.error('로그아웃 요청 실패:', error);
+
+    const notify = (data, state) => {
+        if(state === 'error') {
+            toast.error(data, {position: "top-center", hideProgressBar: true, autoClose: 1500, className: 'mx-auto w-80 lg:w-auto lg:my-auto my-12'})}
+        else if(state === 'success') {
+            toast.success(data, {position: "top-center", hideProgressBar: true, autoClose: 1500, className: 'mx-auto w-80 lg:w-auto lg:my-auto my-12'});
         }
     };
 
+    const logoutHandler = async () => {
+        await axiosInstance.get('/api/user/logout')
+            .then(res => {
+                if(res.data.data === true) {
+                    notify("로그아웃 되었습니다.", 'success');
+                    removeCookies('Authorization');
+                    setCheckCookie(false);
+                    navigate('/');
+                } else {
+                    notify('에러 입니다.', 'error');
+                }
+            }).catch(err => {
+                console.log(err);
+        })
+    };
+
     useEffect(() => {
-        setCheckCookie(!!cookies.token);
-    }, [cookies.token]);
+        console.log(cookies);
+        setCheckCookie(!!cookies.Authorization);
+    }, []);
 
     return (
         <header className="w-full max-w-screen h-20 flex justify-center items-center shadow-md px-5">
@@ -64,11 +75,11 @@ export const Navigationbar = ({ cart }) => {
                 {checkCookie ? (
                     <>
                         <Link to="/user_info" className="flex items-center">
-                            <img src="/images/icon-user.svg" alt="user" className="w-20 mr-1"/>
+                            <img src="/images/icon-user.svg" alt="user" className="lg:w-12 w-20 mr-1"/>
                             <span className="text-sm text-gray-600 hidden md:inline">내정보</span>
                         </Link>
                         <button
-                            className="border p-1 bg-red-400 rounded-xl text-white"
+                            className="btn btn-info text-white "
                             onClick={logoutHandler}
                         >
                             로그아웃

@@ -11,10 +11,11 @@ import axios from "axios"
 import {User_info} from "./components/user_info/user_info";
 import {NewProduct} from "./pages/newProduct";
 import {RegisterBySocialLogin} from "./components/signUpComponents/registerBySocialLogin";
+import {CookiesProvider} from "react-cookie";
+import axiosInstance from "./service/axiosInstance";
 
 function App() {
 
-    const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
 
     useEffect(() => {
@@ -26,60 +27,61 @@ function App() {
         // }
         //
         // axiosProduct();
-        const products = [
-            {
-                id : 1,
-                name : "물건1",
-                price : 123244,
-                brand : "아무 브랜드",
-                img : "./images/image004.png",
-                status : "냉장",
-                sale : 30,
-                stock : 30
-            },
-            {
-                id :2,
-                name : "이렇게까지 길어질줄은 몰랐게지만 이런 음식도 있다는 걸 알아둬",
-                price : 123344,
-                brand : "아무 브랜드",
-                img : "./images/image001.png",
-                status : "냉동",
-                sale : 0,
-                stock : 10
-            },
-            {
-                id : 3,
-                name : "물건3",
-                price : 123344,
-                brand : "아무 브랜드",
-                img : "./images/image003.png",
-                status : "냉동",
-                sale : 10,
-                stock : 10
-            },
-            {
-                id : 4,
-                name : "물건4",
-                price : 123444,
-                brand : "아무 브랜드",
-                img : "./images/image005.png",
-                status : "냉동",
-                sale : 10,
-                stock : 10
-            },
-            {
-                id : 5,
-                name : "물건5",
-                price : 125344,
-                brand : "아무 브랜드",
-                img : "./images/image002.png",
-                status : "냉동",
-                sale : 10,
-                stock : 10
-            }
-        ]
-        setProducts(products);
-    }, [setProducts]);
+        // const products = [
+        //     {
+        //         id : 1,
+        //         name : "물건1",
+        //         price : 123244,
+        //         brand : "아무 브랜드",
+        //         img : "./images/image004.png",
+        //         status : "냉장",
+        //         sale : 30,
+        //         stock : 30
+        //     },
+        //     {
+        //         id :2,
+        //         name : "이렇게까지 길어질줄은 몰랐게지만 이런 음식도 있다는 걸 알아둬",
+        //         price : 123344,
+        //         brand : "아무 브랜드",
+        //         img : "./images/image001.png",
+        //         status : "냉동",
+        //         sale : 0,
+        //         stock : 10
+        //     },
+        //     {
+        //         id : 3,
+        //         name : "물건3",
+        //         price : 123344,
+        //         brand : "아무 브랜드",
+        //         img : "./images/image003.png",
+        //         status : "냉동",
+        //         sale : 10,
+        //         stock : 10
+        //     },
+        //     {
+        //         id : 4,
+        //         name : "물건4",
+        //         price : 123444,
+        //         brand : "아무 브랜드",
+        //         img : "./images/image005.png",
+        //         status : "냉동",
+        //         sale : 10,
+        //         stock : 10
+        //     },
+        //     {
+        //         id : 5,
+        //         name : "물건5",
+        //         price : 125344,
+        //         brand : "아무 브랜드",
+        //         img : "./images/image002.png",
+        //         status : "냉동",
+        //         sale : 10,
+        //         stock : 10
+        //     }
+        // ]
+
+        //setProducts(products);
+    }, []);
 
 
     const convertPrice = (price) => {
@@ -91,6 +93,8 @@ function App() {
 
 
         return (
+            <CookiesProvider>
+
                 <BrowserRouter>
                     <Routes>
                         <Route
@@ -100,8 +104,6 @@ function App() {
                                 <Navigationbar cart={cart}/>
                                 <Home
                                     convertPrice={convertPrice}
-                                    products={products}
-                                    setProducts={setProducts}
                                 />
                             </div>
                             }
@@ -157,12 +159,13 @@ function App() {
                             element={
                                 <div>
                                     <Navigationbar cart={cart}/>
-                                    <NewProduct products={products} convertPrice = {convertPrice}/>
+                                    <NewProduct convertPrice = {convertPrice}/>
                                 </div>
                             }
                         />
                     </Routes>
                 </BrowserRouter>
+            </CookiesProvider>
         );
     }
 

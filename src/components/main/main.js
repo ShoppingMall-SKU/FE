@@ -4,20 +4,29 @@ import {getProducts} from "../../service/fetcher";
 import {Product} from "../product/product";
 import axios from "axios";
 import TabBar from "../navigationbar/TabBar";
+import axiosInstance from "../../service/axiosInstance";
 
-export const Main = ({ convertPrice, products, setProducts })=>{
-    useEffect(() => {
+export const Main = ({ convertPrice })=>{
 
-    }, []);
+    const [products, setProducts] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 1500); // 3초 후 실행
 
-        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 클리어
+        axiosInstance.get('/api/product/list')
+            .then(res => {
+                console.log(res.data.data);
+                setProducts(res.data.data);
+                setIsLoading(false);
+            }).catch(err => {
+            console.log(err);
+        })
+        // const timer = setTimeout(() => {
+        //     setIsLoading(false);
+        // }, 1500); // 3초 후 실행
+        //
+        // return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 클리어
     }, []);
 
 
@@ -32,7 +41,7 @@ export const Main = ({ convertPrice, products, setProducts })=>{
 
 
           <div
-              className={`container max-w-screen-lg xl:max-w-screen-2xl mx-auto mt-6 mb-12 grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 place-items-center gap-x-10 gap-y-10 transition-opacity duration-500 ${isLoading ? 'opacity-70' : 'opacity-100'}`}>
+              className={`container pl-3 pr-3 max-w-screen-lg xl:max-w-screen-2xl mx-auto mt-6 mb-12 grid md:grid-cols-3 sm:grid-cols-3 grid-cols-3 place-items-center gap-x-3 md:gap-x-10 gap-y-0.5 transition-opacity duration-500 ${isLoading ? 'opacity-70' : 'opacity-100'}`}>
               {isLoading
                   ? Array.from({length: 6}).map((_, index) => (
                       <div key={index} className="flex w-80 h-80 lg:w-72 lg:h-72 xl:w-96 xl:h-96 flex-col gap-4 animate-pulse">

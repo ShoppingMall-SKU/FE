@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import {toast, ToastContainer} from "react-toastify";
 import async from "async";
+import { Cookies } from "react-cookie";
+import axiosInstance from "../../service/axiosInstance"
 
 export const RegisterBySocialLogin = () => {
     const [email, setEmail] = useState("");
@@ -39,6 +41,8 @@ export const RegisterBySocialLogin = () => {
         setPhone(formattedPhoneNumber);
     };
 
+    const cookie = new Cookies();
+
     const handleSignup = async () => {
         setIsPrecessing(false);
         try {
@@ -58,8 +62,12 @@ export const RegisterBySocialLogin = () => {
                 zipcode
             };
 
-            const response = await axios.post('http://localhost:8080/api/user/signup', userData);
-            if (response.status === 200) {
+
+            const response = axiosInstance.patch({
+                data : userData
+            });
+            
+            if (response.data.error !== null) {
                 await notify("회원가입 성공에 성공했습니다.");
                 navigate('/login');
             } else {
@@ -100,9 +108,11 @@ export const RegisterBySocialLogin = () => {
         }, 1500); // 3초 후 실행
         return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 클리어
     }
+    const location = useLocation();
+    const strings = location.search;
 
     useEffect(() => {
-        setEmail("you email");
+        setEmail(strings.slice(7));
 
     }, [])
 
