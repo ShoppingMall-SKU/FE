@@ -13,6 +13,12 @@ export const Detail = ({convertPrice, cart, setCart}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        axiosInstance.get(`/api/product/detail/${id}`)
+            .then(res => {
+                setProduct(res.data.data);
+            }).catch(err => {
+                console.log(err);
+        })
     }, []);
 
     const handleQuantity = (type) => {
