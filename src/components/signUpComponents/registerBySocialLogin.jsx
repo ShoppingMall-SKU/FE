@@ -63,11 +63,9 @@ export const RegisterBySocialLogin = () => {
             };
 
 
-            const response = axiosInstance.patch({
-                data : userData
-            });
+            const response = await axiosInstance.put(`/api/user/signup/${userData.email}`, userData);
             
-            if (response.data.error !== null) {
+            if (response.data.error == null) {
                 await notify("회원가입 성공에 성공했습니다.");
                 navigate('/login');
             } else {

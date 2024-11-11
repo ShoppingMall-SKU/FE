@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import {toast, ToastContainer} from "react-toastify";
 import async from "async";
+import axiosInstance from "../../service/axiosInstance";
 
 export const SignUpComponents = () => {
     const [email, setEmail] = useState("");
@@ -81,7 +82,7 @@ export const SignUpComponents = () => {
                     zipcode
                 };
 
-                const response = await axios.post('http://localhost:8080/api/user/signup', userData);
+                const response = await axiosInstance.post('http://localhost:8080/api/user/signup', userData);
                 if (response.status === 200) {
                     await notify("회원가입 성공에 성공했습니다.");
                     navigate('/login');
