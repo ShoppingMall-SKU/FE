@@ -1,16 +1,21 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useCookies} from "react-cookie";
 import {useEffect, useState} from "react";
-import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import {faMagnifyingGlass, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import axiosInstance from "../../service/axiosInstance";
 import {toast} from "react-toastify";
+import {useDispatch, useSelector} from "react-redux";
+import {changeState} from "../../store/loginState";
 
 export const Navigationbar = ({ cart }) => {
 
     const [cookies,setCookies, removeCookies] = useCookies(["Authorization"]);
     const [checkCookie, setCheckCookie] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const isLoggedIn = useSelector((state) => {return state.loggedIn.value})
 
     const notify = (data, state) => {
         if(state === 'error') {
@@ -23,23 +28,18 @@ export const Navigationbar = ({ cart }) => {
     const logoutHandler = async () => {
         await axiosInstance.get('/api/user/logout')
             .then(res => {
-                if(res.data.data === true) {
-                    notify("로그아웃 되었습니다.", 'success');
-                    removeCookies('Authorization');
-                    setCheckCookie(false);
-                    navigate('/');
-                } else {
-                    notify('에러 입니다.', 'error');
-                }
+                notify("로그아웃 되었습니다.", 'success');
+                removeCookies('Authorization');
+                dispatch(changeState());
+                navigate('/');
             }).catch(err => {
                 console.log(err);
         })
     };
 
     useEffect(() => {
-        console.log(cookies);
-        setCheckCookie(!!cookies.Authorization);
-    }, []);
+        console.log(isLoggedIn);
+    }, [cookies]);
 
     return (
         <header className="w-full max-w-screen h-20 flex justify-center items-center shadow-md px-5">
@@ -60,9 +60,9 @@ export const Navigationbar = ({ cart }) => {
                     />
                 </div>
 
-            <div className="flex items-end space-x-4">
+            <div className="flex items-center justify-center space-x-4">
                 <Link to="/cart" className="flex items-center relative">
-                    <img src="/images/icon-shopping-cart.svg" alt="cart" className="lg:w-12 w-20"/>
+                    <img src="/images/icon-shopping-cart.svg" alt="cart" className="lg:w-12 w-96"/>
                     <span className="text-sm text-gray-600 ml-2 hidden md:inline">장바구니</span>
                     {cart.length >= 1 && (
                         <div
@@ -72,18 +72,25 @@ export const Navigationbar = ({ cart }) => {
                     )}
                 </Link>
 
-                {checkCookie ? (
+                {isLoggedIn ? (
                     <>
                         <Link to="/user_info" className="flex items-center">
-                            <img src="/images/icon-user.svg" alt="user" className="lg:w-12 w-20 mr-1"/>
+                            <img src="/images/icon-user.svg" alt="user" className="lg:w-12 w-96 mr-1"/>
                             <span className="text-sm text-gray-600 hidden md:inline">내정보</span>
                         </Link>
+                        {/*<button*/}
+                        {/*    className="btn btn-info text-white "*/}
+                        {/*    onClick={logoutHandler}*/}
+                        {/*>*/}
+                        {/*    로그아웃*/}
+                        {/*</button>*/}
                         <button
-                            className="btn btn-info text-white "
+                            className="btn btn-info text-white flex items-center gap-2"
                             onClick={logoutHandler}
                         >
-                            로그아웃
+                            <FontAwesomeIcon icon={faRightFromBracket} />
                         </button>
+
                     </>
                 ) : (
                     <Link to="/login" className="flex items-center">

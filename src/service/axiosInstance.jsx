@@ -1,16 +1,15 @@
 import axios from "axios";
 import {Cookies} from "react-cookie";
 
-const cookie = new Cookies();
+//console.log(document.cookie.replace("Authorization=",  ""))
 
 const axiosInstance = axios.create({
     baseURL : process.env.REACT_APP_BASE_URL,
     timeout : 10000,
     headers : {
-        'Authorization' : `Bearer ${cookie.get("Authorization")}`,
-        'Access-Control-Allow-Origin' : '*'
+        'Authorization' : `Bearer ${document.cookie.replace("Authorization=", "")}`,
+        'Content-Type': 'application/json'
     },
-    withCredentials : true
 })
 
 export default axiosInstance;

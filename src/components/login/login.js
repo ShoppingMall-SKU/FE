@@ -4,12 +4,15 @@ import {useNavigate} from "react-router-dom";
 import { useCookies } from "react-cookie";
 import {toast, ToastContainer} from "react-toastify";
 import axiosInstance from "../../service/axiosInstance";
+import {useDispatch} from "react-redux";
+import {changeState} from "../../store/loginState";
 
 export const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [cookies, setCookies] = useCookies();
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
@@ -38,6 +41,7 @@ export const Login = () => {
 
                 console.log(accessToken);
                 setCookies('Authorization', accessToken);
+                dispatch(changeState());
                 navigate("/");
 
             }).catch(err => {

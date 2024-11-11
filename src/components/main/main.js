@@ -18,6 +18,7 @@ export const Main = ({ convertPrice })=>{
             .then(res => {
                 //console.log(res.data.data);
                 setProducts(res.data.data);
+                console.log(res)
                 setIsLoading(false);
             }).catch(err => {
             console.log(err);
