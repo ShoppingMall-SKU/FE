@@ -1,10 +1,18 @@
 import {Main} from "../components/main/main";
+import {useEffect} from "react";
+import {useDispatch} from "react-redux";
 
-const Home=({ convertPrice, products, setProducts })=>{
+const Home=({ convertPrice })=>{
+
+    //console.log(document.cookie);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+    }, []);
+
     return(<Main
         convertPrice={convertPrice}
-        products={products}
-        setProducts={setProducts}
     />);
 };
 

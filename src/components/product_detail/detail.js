@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import axiosInstance from "../../service/axiosInstance";
 
 
 export const Detail = ({convertPrice, cart, setCart}) => {
@@ -12,11 +13,12 @@ export const Detail = ({convertPrice, cart, setCart}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 500); // 3초 후 실행
-
-        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 클리어
+        axiosInstance.get(`/api/product/detail/${id}`)
+            .then(res => {
+                setProduct(res.data.data);
+            }).catch(err => {
+                console.log(err);
+        })
     }, []);
 
     const handleQuantity = (type) => {
@@ -69,25 +71,16 @@ export const Detail = ({convertPrice, cart, setCart}) => {
     };
 
     useEffect(() => {
-
-
-        // const axiosProductDetail = async () => {
-        //     const response = await axios.get(`http://localhost:8080/api/product/detail/${id}`);
-        //     const data = response.data;
-        //
-        //     setProduct(data);
-        // };
-        // axiosProductDetail();
-        setProduct({
-            id: 1,
-            name: "물건1",
-            price: 123244,
-            brand: "아무 브랜드",
-            img: "/images/image004.png",
-            status: "냉동",
-            sale: 30,
-            stock: 10
+        axiosInstance.get(`/api/product/detail/${id}`)
+            .then(res => {
+                setProduct(res.data.data);
+                setIsLoading(false);
+            }).catch(err => {
+                console.log(err);
         })
+
+
+
     }, [id, product.price]);
 
     return (
