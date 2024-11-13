@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import {useEffect, useState} from "react";
 import {wait} from "@testing-library/user-event/dist/utils";
 
-export const Product = ({ product, convertPrice }) => {
+export const Product = ({ product }) => {
     const { id, name, status, brand, price, img, sale, stock } = product;
 
     useEffect(() => {
@@ -28,7 +28,7 @@ export const Product = ({ product, convertPrice }) => {
 
                 <div className="mb-2 md:mb-3">
                     {name.length > 9 ?
-                        (<span className="text-xs md:text-3xl leading-22 text-black" style={{fontFamily: 'sb'}}> {name.slice(0, 20)} ..</span>) :
+                        (<span className="text-xs md:text-3xl leading-22 text-black" style={{fontFamily: 'sb'}}> {name.slice(0, 19)} ..</span>) :
                         (<span className="text-xs md:text-3xl leading-22 text-black" style={{fontFamily: 'sb'}}>{name}</span>)
                     }
                 </div>
@@ -46,16 +46,16 @@ export const Product = ({ product, convertPrice }) => {
                     {sale > 0 ? (
                             <>
                                 <div>
-                                    <span className="text-xs md:text-lg font-bold leading-30 text-red-600 line-through">{convertPrice(price)} 원</span>
+                                    <span className="text-xs md:text-lg font-bold leading-30 text-red-600 line-through">{(price).toLocaleString()} 원</span>
                                     <span className="text-xs md:text-lg font-bold leading-30 text-red-600">  -{sale}%</span>
                                 </div>
 
-                                <span className="text-sm md:text-3xl font-bold leading-30 text-black">{convertPrice((price * ((100 - sale) / 100)))}</span>
+                                <span className="text-sm md:text-3xl font-bold leading-30 text-black">{(price * ((100 - sale) / 100)).toLocaleString()}</span>
                                 <span className="text-sm md:text-base leading-20 text-black"> 원</span>
                             </>) :
                         (
                             <div className="mb-6">
-                                <span className="text-sm md:text-3xl font-bold leading-30 text-black">{convertPrice(price)}</span>
+                                <span className="text-sm md:text-3xl font-bold leading-30 text-black">{(price).toLocaleString()}</span>
                                 <span className="text-sm md:text-base leading-20 text-black"> 원</span>
                             </div>
                         )

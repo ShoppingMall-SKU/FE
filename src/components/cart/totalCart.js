@@ -9,17 +9,26 @@ export const TotalCart = ({ total, setTotal, cart, convertPrice, found, sale, de
     useEffect(() => {
         if (found) {
             const temp = found.filter((item) => item.length !== 0);
-            setSum(temp.map((item) => item[0].price * item[0].quantity));
-            setSale(temp.map((item) => Math.round(item[0].price * item[0].sale * 0.01) * item[0].quantity));
 
-            if (sum.length === 0) {
+            const sumTotal = temp
+                .map((item) => item[0].price * item[0].quantity)
+                .reduce((acc, curr) => acc + curr, 0);
+
+            const saleTotal = temp
+                .map((item) => Math.round(item[0].price * item[0].sale * 0.01) * item[0].quantity)
+                .reduce((acc, curr) => acc + curr, 0);
+
+            setSum(sumTotal);
+            setSale(saleTotal);
+
+            if (sumTotal === 0) {
                 setTotal(0);
-                return;
             }
         } else {
             setTotal(0);
         }
     }, [cart, total, found, setTotal]);
+
 
     const onClickPayment = () => {
         const {IMP} = window;

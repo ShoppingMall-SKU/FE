@@ -193,13 +193,13 @@ export const User_info = () => {
     };
 
     return (
-        <div className="mt-10 mx-auto flex justify-center max-w-screen-2xl items-center shadow-2xl rounded-2xl">
+        <div className="mt-10 mx-auto flex-col px-5 py-5 mb-12 md:flex-row justify-center max-w-screen-lg items-center shadow-2xl rounded-2xl">
             <div className="flex px-8 py-10 card bg-base-200 w-full">
-                <span className="flex ml-10 mb-12 font-bold text-6xl">🎉 반갑습니다 ! {userInfo.name} 님.</span>
+                <span className="flex text-xl ml-5 md:ml-10 mb-7 md:mb-12 font-bold md:text-6xl">🎉 반갑습니다 ! {userInfo.name} 님.</span>
 
-                <div className="flex">
-                    <div className="flex-col card card-body bg-base-300 shadow-xl">
-                        <p className="flex font-semibold text-xl">🚚 이런 상품들을 주문했어요.</p>
+                <div className="md:flex">
+                    <div className="flex-col card p-4 card-body bg-base-300 shadow-xl">
+                        <p className="flex font-semibold text-lg md:text-xl">🚚 이런 상품들을 주문했어요.</p>
                         <div className="flex-col">
                             {orders && orders.length > 0 ? (
                                 displayedOrders.map((order, index) => (
@@ -233,17 +233,38 @@ export const User_info = () => {
                         </div>
                     </div>
 
-                    <div className="divider lg:divider-horizontal"></div>
+                    <div className="flex divider lg:divider-horizontal"></div>
 
-                    <div className="flex card justify-start card-body w-80 bg-base-300 shadow-xl">
+                    <div className="flex card justify-start card-body md:w-80 bg-base-300 shadow-xl">
                         <div className='flex-row'>
                             <p className="flex-row font-semibold text-xl">ℹ️ 회원 정보</p>
                         </div>
-                        <div className='card-body flex items-center'>
-                            <input type="text" placeholder={userInfo.name} className={`input input-bordered w-full max-w-xs `}/>
-                            <input type="text" placeholder={userInfo.phone} className={`input input-bordered w-full max-w-xs `}/>
-                            <input type="text" placeholder={userInfo.email} className={`disabled input input-bordered w-full max-w-xs `}/>
-                            <input type="text" placeholder={userInfo.zipcode} className={`input input-bordered w-full max-w-xs `}/>
+                        <div className='card-body p-0 flex items-center'>
+                            <span className='flex gap-x-4 items-center'>
+                                <input type="text" placeholder={userInfo.name}
+                                       className={`input input-bordered w-full max-w-xs `}/>
+                                <button className='btn btn-xs md:btn-sm shadow-md'>수정</button>
+                            </span>
+                            <span className='flex gap-x-4 items-center'>
+                                <input type="text" placeholder={userInfo.phone}
+                                       className={`input input-bordered w-full max-w-xs `}/>
+                                <button className='btn btn-xs md:btn-sm shadow-md'>수정</button>
+                            </span>
+                            <span className='flex gap-x-4 items-center'>
+                                <input type="text" placeholder={userInfo.email}
+                                       className={`disabled input input-bordered w-full max-w-xs `}/>
+                                <button className='btn btn-xs md:btn-sm shadow-md'>수정</button>
+                            </span>
+                            <span className='flex gap-x-4 items-center'>
+                                <input type="text" placeholder={userInfo.streetAdr}
+                                       className={`input input-bordered w-full max-w-xs `}/>
+                                <button className='btn btn-xs md:btn-sm shadow-md'>수정</button>
+                            </span>
+                            <span className='flex gap-x-4 items-center'>
+                                <input type="text" placeholder={userInfo.zipcode}
+                                       className={`input input-bordered w-full max-w-xs `}/>
+                                <button className='btn btn-xs md:btn-sm shadow-md'>수정</button>
+                            </span>
                         </div>
                     </div>
                 </div>

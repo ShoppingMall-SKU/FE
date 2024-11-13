@@ -1,23 +1,59 @@
 import {Product} from "../components/product/product";
 import React, {useEffect, useState} from "react";
 import TabBar from "../components/navigationbar/TabBar";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
+import axiosInstance from "../service/axiosInstance";
 
-export const NewProduct = ({products, convertPrice}) => {
+export const NewProduct = ({convertPrice}) => {
 
-    const [filter, setFilter] = useState('');
     const [status, setStatus] = useState("전체");
-    const [maxPrice, setMaxPrice] = useState(1000);
     const [filteredProducts, setFilteredProducts] = useState([]);
 
-    useEffect(() => {
-        if(status === "전체") {
-            setFilteredProducts(products);
-        }else {
-            const filtered = products.filter(p => p.status === status);
-            setFilteredProducts(filtered);
-        }
-    }, [status, products]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 6;
 
+    const [end, setEnd] = useState(false);
+    const [moreLoading, setMoreLoading] = useState(true);
+
+
+    useEffect(() => {
+        // 페이지가 변경될 때마다 데이터를 가져옵니다.
+        if(currentPage === 0) {
+            setIsLoading(true);
+        } else {
+            setMoreLoading(false);
+        }
+        axiosInstance.get(`/api/product/list/${currentPage}`)
+            .then(res => {
+                setFilteredProducts(prevProducts => [
+                    ...prevProducts,
+                    ...res.data.data.list
+                ]);
+
+                if(res.data.data.list === 0) {
+                    setEnd(true);
+                }
+
+                if(currentPage === 0) {
+                    setIsLoading(false);
+                }
+                setMoreLoading(true);
+            })
+            .catch(err => {
+                console.log(err);
+                if(currentPage === 0) {
+                    setIsLoading(false);
+                } else {
+                    setMoreLoading(false);
+                }
+            });
+    }, [currentPage]); // currentPage가 변경될 때마다 실행
+
+    const loadMore = () => {
+        setCurrentPage(prevPage => prevPage + 1);
+    };
 
     return (
         <div className="justify-center items-center">
@@ -33,7 +69,7 @@ export const NewProduct = ({products, convertPrice}) => {
                 <hr/>
                 <div className="flex mt-7 justify-between mb-6">
                     <label className="flex text-lg lg:text-xl font-bold" style={{fontFamily: 'sans-serif'}}>
-                        총 {filteredProducts.length}개의 상품이 있습니다.
+                        {/*총 {filteredProducts.length}개의 상품이 있습니다.*/}
                     </label>
                     <div className="flex space-x-4">
                         <form className="">
@@ -63,6 +99,21 @@ export const NewProduct = ({products, convertPrice}) => {
                     );
                 })}
             </div>
+
+            {!isLoading && !end && (
+                <div className="flex justify-center mb-12">
+                    <button
+                        onClick={loadMore}
+                        className="btn btn-outline w-80 md:w-96 text-black bg-white rounded-xl"
+                    >
+                        {
+                            moreLoading ?
+                                (<FontAwesomeIcon icon={faArrowDown} />) :
+                                (<span className="loading loading-dots loading-sm"></span>)
+                        }
+                    </button>
+                </div>
+            )}
         </div>
     )
 }

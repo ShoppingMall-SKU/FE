@@ -13,6 +13,7 @@ import {NewProduct} from "./pages/newProduct";
 import {RegisterBySocialLogin} from "./components/signUpComponents/registerBySocialLogin";
 import {CookiesProvider} from "react-cookie";
 import axiosInstance from "./service/axiosInstance";
+import {Search} from "./pages/search";
 
 function App() {
 
@@ -151,7 +152,10 @@ function App() {
                         <Route
                             path="/cart"
                             element={
+                            <div>
+                                <Navigationbar cart={cart}/>
                                 <Basket cart={cart} setCart={setCart} convertPrice={convertPrice}/>
+                            </div>
                             }
                         />
                         <Route
@@ -162,6 +166,16 @@ function App() {
                                     <NewProduct convertPrice = {convertPrice}/>
                                 </div>
                             }
+                        />
+                        <Route
+                            path="/search"
+                            element={
+                                <div>
+                                    <Navigationbar cart={cart}/>
+                                    <Search/>
+                                </div>
+                            }
+
                         />
                     </Routes>
                 </BrowserRouter>

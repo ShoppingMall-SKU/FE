@@ -14,6 +14,8 @@ export const Navigationbar = ({ cart }) => {
     const [checkCookie, setCheckCookie] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [query, setQuery] = useState("");
+
 
     const isLoggedIn = useSelector((state) => {return state.loggedIn.value})
 
@@ -37,6 +39,10 @@ export const Navigationbar = ({ cart }) => {
         })
     };
 
+    const handleInputChange = (event) => {
+        setQuery(event.target.value);
+    };
+
     useEffect(() => {
         console.log(isLoggedIn);
     }, [cookies]);
@@ -45,24 +51,31 @@ export const Navigationbar = ({ cart }) => {
         <header className="w-full max-w-screen h-20 flex justify-center items-center shadow-md px-5">
             <div className="flex w-full justify-between items-center space-x-5">
                 <Link to="/">
-                    <img src="/images/logo3.png" alt="logo" className="w-20 xl:w-20 xl:h-20 lg:h-10 h-7"/>
+                    <img src="/images/logo3.png" alt="logo" className="xl:h-20 xl:w-20 lg:h-10 lg:w-10 w-10"/>
                 </Link>
                 <div className="flex relative lg:max-w-xl lg:w-full h-10 items-center justify-center">
                     <input
                         type="text"
-                        placeholder="상품을 검색해보세요"
-                        className="flex lg:max-w-screen-lg lg:py-6 lg:w-full pl-3 text-sm placeholder:text-sm md:placeholder:text-base md:text-sm lg:placeholder:text-lg h-9 border-2 border-green-600 rounded-lg lg:text-xl focus:outline-none"
+                        placeholder="상품을 검색해보세요 !"
+                        className="input input-bordered size-10 text-xs input-success w-full lg:max-w-96"
+                        value={query} // query 상태와 연결
+                        onChange={handleInputChange}
                     />
-                    <FontAwesomeIcon
-                        icon={faMagnifyingGlass}
-                        className="flex ml-3 h-4 w-5 md:h-6 md:w-6 lg:h-8 lg:w-8"
-                        style={{color: "#16a34a"}}
-                    />
+                    <Link to={{
+                        pathname: '/search',
+                        search: `?query=${query}`,
+                    }}>
+                        <FontAwesomeIcon
+                            icon={faMagnifyingGlass}
+                            className="flex ml-3 h-4 w-5 md:h-6 md:w-6 lg:h-8 lg:w-8"
+                            style={{color: "#16a34a"}}
+                        />
+                    </Link>
                 </div>
 
-            <div className="flex items-center justify-center space-x-4">
-                <Link to="/cart" className="flex items-center relative">
-                    <img src="/images/icon-shopping-cart.svg" alt="cart" className="lg:w-12 w-96"/>
+                <div className="flex items-center justify-center space-x-2 md:space-x-4">
+                    <Link to="/cart" className="flex items-center relative">
+                    <img src="/images/icon-shopping-cart.svg" alt="cart" className="lg:w-12 max-w-96"/>
                     <span className="text-sm text-gray-600 ml-2 hidden md:inline">장바구니</span>
                     {cart.length >= 1 && (
                         <div
@@ -75,7 +88,7 @@ export const Navigationbar = ({ cart }) => {
                 {isLoggedIn ? (
                     <>
                         <Link to="/user_info" className="flex items-center">
-                            <img src="/images/icon-user.svg" alt="user" className="lg:w-12 w-96 mr-1"/>
+                            <img src="/images/icon-user.svg" alt="user" className="lg:w-12 max-w-96 mr-1"/>
                             <span className="text-sm text-gray-600 hidden md:inline">내정보</span>
                         </Link>
                         {/*<button*/}
@@ -94,7 +107,7 @@ export const Navigationbar = ({ cart }) => {
                     </>
                 ) : (
                     <Link to="/login" className="flex items-center">
-                        <img src="/images/icon-user.svg" alt="user" className="lg:w-12 w-20 mr-1"/>
+                        <img src="/images/icon-user.svg" alt="user" className="lg:w-12 max-w-96 w-10 mr-1"/>
                         <span className="text-sm text-gray-600 hidden md:inline">로그인</span>
                     </Link>
                 )}
