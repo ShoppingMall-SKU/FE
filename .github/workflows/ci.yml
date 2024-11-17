@@ -1,5 +1,9 @@
 # 1 워크플로의 이름 지정
 name: CI/CD
+on:                                  # Event 감지
+  push:
+    branches:
+      - release
 
 # 2 워크플로가 시작될 조건 지정
 jobs:                                # Job 설정
