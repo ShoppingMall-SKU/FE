@@ -1,25 +1,19 @@
 # 1 워크플로의 이름 지정
-name: CI
+name: CI/CD
 
 # 2 워크플로가 시작될 조건 지정
-on:
-  push:
-    branches: [ main ]
-
-jobs:
+jobs:                                # Job 설정
   build:
-    runs-on: ubuntu-latest # 3 실행 환경 지정
-    #4 실행스텝지정
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout source code.   # Repo checkout
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'mealshop'
-          java-version: '17'
+      - name: Check Node v            # Node v 확인
+        run: node -v
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Install dependencies    # 의존 파일 설치
+        run: npm install
 
-      - name: Build with Gradle
-        run: ./gradlew clean build
+      - name: Generate build          # React Build
+        run: npm run build
